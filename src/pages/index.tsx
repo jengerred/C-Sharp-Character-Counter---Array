@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 
 interface CharacterFrequency {
@@ -8,20 +8,30 @@ interface CharacterFrequency {
 }
 
 export default function Home() {
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<string>('')
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-  const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([])
+  const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([]);
+
+  const handleImageClick = (imageSrc: string) => {
+    setExpandedImage(prevImage => prevImage === imageSrc ? null : imageSrc);
+  };
 
   useEffect(() => {
     fetch('/wap.txt')
       .then(response => response.text())
       .then(text => {
         setFileContent(text)
+        processFile(text)
       })
       .catch(error => console.error('Error fetching file:', error))
   }, [])
 
   const processFile = (text: string) => {
+    console.log('Processing file with FULL text:', text.slice(0, 500) + '...');
+    console.log('Total text length:', text.length);
+    console.log('Processing file with text:', text);
+    console.log('Text length:', text.length);
     const frequencies: { [key: string]: number } = {}
 
     // Process file byte by byte
@@ -39,10 +49,14 @@ export default function Home() {
       }))
       .sort((a, b) => a.asciiCode - b.asciiCode)
 
+    console.log('Frequency array:', frequencyArray);
+    console.log('Generated frequency array:', frequencyArray);
+    console.log('Number of unique characters:', frequencyArray.length);
     setCharacterFrequencies(frequencyArray)
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('File upload event triggered');
     const file = event.target.files?.[0]
     if (file) {
       setUploadedFile(file)
@@ -51,7 +65,8 @@ export default function Home() {
         const text = e.target?.result as string
         processFile(text)
       }
-      reader.readAsText(file)
+      reader.readAsText(file);
+      console.log('Reading file:', file.name);
     }
   }
 
@@ -211,19 +226,50 @@ Example: counter.exe myInput.txt Count.txt</pre>
           <h2 className="text-2xl font-semibold mb-4">Implementation Guide</h2>
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold mb-4">Step 1: Open Visual Studio</h3>
-              <p className="mb-3">Launch Visual Studio to begin your project setup.</p>
-              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Open Visual Studio</li>
-                <li>Click "Create a new project"</li>
-                <li>Select "Console App" or "Console Application"</li>
-              </ol>
-              <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto language-csharp">
-{`// Visual Studio Project Creation Steps
-1. Start Visual Studio
-2. Click 'Create a new project'
-3. Choose 'Console App (.NET Core)'`}
-              </pre>
+              <h3 className="text-xl font-semibold mb-4">Step 1: Open <a href="https://visualstudio.microsoft.com/" target="_blank" className="text-blue-600 hover:text-blue-800 transition-colors duration-300">Visual Studio</a></h3>
+              <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div className="w-full md:w-1/2">
+                  <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
+                
+                    <li>Click "Create a new project"</li>
+                    <div className="w-full md:w-1/2 p-2 bg-gray-100">
+                  <img
+                    src={'/images/visual-studio-platform.png'}
+                    alt="Visual Studio Platform"
+                    onClick={() => handleImageClick('/images/visual-studio-platform.png')}
+                    style={{
+                      maxWidth: expandedImage === '/images/visual-studio-platform.png' ? '800px' : '300px', 
+                      maxHeight: expandedImage === '/images/visual-studio-platform.png' ? '600px' : '200px', 
+                      width: 'auto', 
+                      height: 'auto', 
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                    className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
+                  />
+                </div>
+                    <li>Select "C# Console Application"</li>
+                    <div className="w-full md:w-1/2 p-2 bg-gray-100">
+                  <img
+                    src={'/images/vs-console-app.png'}
+                    alt="Visual Studio Console App Selection"
+                    onClick={() => handleImageClick('/images/vs-console-app.png')}
+                    style={{
+                      maxWidth: expandedImage === '/images/vs-console-app.png' ? '800px' : '300px', 
+                      maxHeight: expandedImage === '/images/vs-console-app.png' ? '600px' : '200px', 
+                      width: 'auto', 
+                      height: 'auto', 
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                    className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
+                  />
+                </div>
+                  </ol>
+                </div>
+              
+              </div>
+
             </div>
 
             <div>
