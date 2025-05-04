@@ -12,6 +12,7 @@ export default function Home() {
   const [fileContent, setFileContent] = useState<string>('')
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([]);
+  const [showCharacterFrequencies, setShowCharacterFrequencies] = useState(false);
 
   const handleImageClick = (imageSrc: string) => {
     setExpandedImage(prevImage => prevImage === imageSrc ? null : imageSrc);
@@ -49,11 +50,9 @@ export default function Home() {
       }))
       .sort((a, b) => a.asciiCode - b.asciiCode)
 
-    console.log('Detailed Frequency Breakdown:');
-    frequencyArray.forEach(freq => {
-      console.log(`Character: '${freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}', ASCII: ${freq.asciiCode}, Frequency: ${freq.frequency}`);
-    });
-    console.log('Total Unique Characters:', frequencyArray.length);
+    console.log('Frequency array:', frequencyArray);
+    console.log('Generated frequency array:', frequencyArray);
+    console.log('Number of unique characters:', frequencyArray.length);
     setCharacterFrequencies(frequencyArray)
   }
 
@@ -401,24 +400,19 @@ dotnet run CharacterCounter.exe input.txt output.txt`}
           </div>
         </section>
 
-           
-        <section className="mt-8">
-          <h3 className="text-2xl font-semibold mb-4">Interactive Character Frequency Counter</h3>
-          <div className="bg-gray-100 p-6 rounded-lg">
-            <input
-              type="file"
-              accept=".txt"
-              onChange={handleFileUpload}
-              className="mb-4 w-full p-2 border rounded"
-            />
-            {uploadedFile && (
-              <div className="mt-4">
-                <h4 className="font-bold mb-2">Uploaded File: {uploadedFile.name}</h4>
-              </div>
-            )}
-            {characterFrequencies.length > 0 && (
-              <div className="mt-4">
-                <h4 className="font-bold mb-2">Character Frequencies</h4>
+        {fileContent && (
+          <section className="mt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-semibold">Character Frequency Analysis</h3>
+              <button 
+                onClick={() => setShowCharacterFrequencies(!showCharacterFrequencies)}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+              >
+                {showCharacterFrequencies ? 'Hide' : 'View'} Expected Output
+              </button>
+            </div>
+            {showCharacterFrequencies && characterFrequencies.length > 0 && (
+              <div className="bg-gray-100 p-6 rounded-lg">
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="bg-gray-200">
@@ -439,8 +433,10 @@ dotnet run CharacterCounter.exe input.txt output.txt`}
                 </table>
               </div>
             )}
-          </div>
-        </section>
+          </section>
+        )}
+        
+
       </main>
     </div>
   )
