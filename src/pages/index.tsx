@@ -62,6 +62,8 @@ export default function Home() {
     'Process input files byte by byte'
   ]
 
+  const [showExampleOutput, setShowExampleOutput] = useState(false);
+
   return (
     <div className="container mx-auto p-6">
       <Head>
@@ -84,15 +86,34 @@ export default function Home() {
               <li>Character frequency objects must be processed and stored using an array</li>
             </ul>
 
-            <h3 className="font-bold mt-2">Example Input/Output:</h3>
-            <p>Example input file: Hello.</p>
-            <pre className="bg-white p-2 rounded border mb-4">(10) 1
+            <h3 className="font-bold mt-2">Example Input/Output</h3>
+            <div className="mb-4">
+              <p className="mb-2">Example input file: Hello.</p>
+              <button 
+                onClick={() => setShowExampleOutput(!showExampleOutput)}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+              >
+                {showExampleOutput ? 'Hide' : 'Show'} Output
+              </button>
+            </div>
+
+            {showExampleOutput && (
+              <div className="bg-[#1E1E1E] p-3 rounded-md">
+                <pre className="font-mono text-[#D4D4D4] text-sm whitespace-pre-wrap break-all" style={{
+                  fontFamily: 'Consolas, monospace',
+                  backgroundColor: '#1E1E1E',
+                  padding: '10px',
+                  borderRadius: '4px',
+                  border: '1px solid #2D2D2D'
+                }}>{`(10) 1
 (13) 1
 .(46) 1
 H(72) 1
 e(101) 1
 l(108) 2
-o(111) 1</pre>
+o(111) 1`}</pre>
+              </div>
+            )}
 
             <h3 className="font-bold mt-2">Output Format:</h3>
             <p>Character (ASCII value) (tab) Frequency</p>

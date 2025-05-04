@@ -1,0 +1,274 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+  background-color: #f4f4f4;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.simulation-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 2rem;
+}
+
+.explanation-panel {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.explanation-panel h2 {
+  color: rgb(var(--foreground-rgb));
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #4CAF50;
+  padding-bottom: 0.5rem;
+}
+
+.explanation-panel ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.code-section {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.code-section h3 {
+  background-color: #2d2d2d;
+  color: white;
+  padding: 1rem;
+  margin: 0;
+}
+
+.code-section pre {
+  margin: 0;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #f8f8f8;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  border-radius: 5px;
+}
+
+.visualization {
+  height: 600px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+}
+
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+.section-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.section-navigation button {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  font-weight: bold;
+}
+
+.section-navigation button.active,
+.section-navigation button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.tutorial-content {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.learning-objectives ul,
+.requirement-details ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.code-example {
+  margin-bottom: 20px;
+}
+
+.frequency-results {
+  margin-top: 20px;
+}
+
+.frequency-results textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.frequency-results button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.frequency-results button:hover {
+  background-color: #45a049;
+}
+
+.frequency-results table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.frequency-results th, 
+.frequency-results td {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  text-align: left;
+}
+
+.frequency-results th {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+pre {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  color: white;
+}
+
+code {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: #4CAF50;
+}
+
+.file-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.file-contents {
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.frequency-table {
+  width: 100%;
+}
+
+.frequency-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.frequency-table th, .frequency-table td {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  text-align: left;
+}
+
+.frequency-table th {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.requirements-section ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .section-navigation {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .section-navigation button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
