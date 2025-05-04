@@ -49,9 +49,11 @@ export default function Home() {
       }))
       .sort((a, b) => a.asciiCode - b.asciiCode)
 
-    console.log('Frequency array:', frequencyArray);
-    console.log('Generated frequency array:', frequencyArray);
-    console.log('Number of unique characters:', frequencyArray.length);
+    console.log('Detailed Frequency Breakdown:');
+    frequencyArray.forEach(freq => {
+      console.log(`Character: '${freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}', ASCII: ${freq.asciiCode}, Frequency: ${freq.frequency}`);
+    });
+    console.log('Total Unique Characters:', frequencyArray.length);
     setCharacterFrequencies(frequencyArray)
   }
 
