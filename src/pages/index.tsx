@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 
+interface CharacterFrequency {
+  character: string;
+  asciiCode: number;
+  frequency: number;
+}
+
 export default function Home() {
   const [fileContent, setFileContent] = useState<string>('')
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([])
 
   useEffect(() => {
     fetch('/wap.txt')
@@ -12,6 +20,41 @@ export default function Home() {
       })
       .catch(error => console.error('Error fetching file:', error))
   }, [])
+
+  const processFile = (text: string) => {
+    const frequencies: { [key: string]: number } = {}
+
+    // Process file byte by byte
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i]
+      frequencies[char] = (frequencies[char] || 0) + 1
+    }
+
+    // Convert to CharacterFrequency array
+    const frequencyArray: CharacterFrequency[] = Object.entries(frequencies)
+      .map(([character, frequency]) => ({
+        character,
+        asciiCode: character.charCodeAt(0),
+        frequency
+      }))
+      .sort((a, b) => a.asciiCode - b.asciiCode)
+
+    setCharacterFrequencies(frequencyArray)
+  }
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setUploadedFile(file)
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const text = e.target?.result as string
+        processFile(text)
+      }
+      reader.readAsText(file)
+    }
+  }
+
   const learningObjectives = [
     'Understand array manipulation in C#',
     'Implement file I/O operations',
@@ -270,6 +313,45 @@ dotnet run CharacterCounter.exe input.txt output.txt`}
             </section>
 
            
+        <section className="mt-8">
+          <h3 className="text-2xl font-semibold mb-4">Interactive Character Frequency Counter</h3>
+          <div className="bg-gray-100 p-6 rounded-lg">
+            <input
+              type="file"
+              accept=".txt"
+              onChange={handleFileUpload}
+              className="mb-4 w-full p-2 border rounded"
+            />
+            {uploadedFile && (
+              <div className="mt-4">
+                <h4 className="font-bold mb-2">Uploaded File: {uploadedFile.name}</h4>
+              </div>
+            )}
+            {characterFrequencies.length > 0 && (
+              <div className="mt-4">
+                <h4 className="font-bold mb-2">Character Frequencies</h4>
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="border p-2">Character</th>
+                      <th className="border p-2">ASCII Code</th>
+                      <th className="border p-2">Frequency</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {characterFrequencies.map((freq, index) => (
+                      <tr key={index} className="hover:bg-gray-50">
+                        <td className="border p-2">{freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}</td>
+                        <td className="border p-2 text-center">{freq.asciiCode}</td>
+                        <td className="border p-2 text-center">{freq.frequency}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </section>
       </main>
     </div>
   )
