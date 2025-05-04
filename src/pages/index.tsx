@@ -221,24 +221,29 @@ Example: counter.exe myInput.txt Count.txt</pre>
             </div>
             {showCharacterFrequencies && characterFrequencies.length > 0 && (
               <div className="bg-gray-100 p-6 rounded-lg">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="bg-gray-200">
-                      <th className="border p-2">Character</th>
-                      <th className="border p-2">ASCII Code</th>
-                      <th className="border p-2">Frequency</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {characterFrequencies.map((freq, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="border p-2">{freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}</td>
-                        <td className="border p-2 text-center">{freq.asciiCode}</td>
-                        <td className="border p-2 text-center">{freq.frequency}</td>
+                <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-md">
+                  <div className="bg-gray-200 px-4 py-2 font-semibold text-gray-700 border-b border-gray-300">
+                    Character Frequency Analysis
+                  </div>
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gray-50 border-b border-gray-200">
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Character</th>
+                        <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ASCII Code</th>
+                        <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Frequency</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {characterFrequencies.map((freq, index) => (
+                        <tr key={index} className="hover:bg-gray-50 transition duration-200">
+                          <td className="px-4 py-2">{freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}</td>
+                          <td className="px-4 py-2 text-center">{freq.asciiCode}</td>
+                          <td className="px-4 py-2 text-center">{freq.frequency}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </section>
