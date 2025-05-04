@@ -121,6 +121,26 @@ o(111) 1`}</pre>
             <h3 className="font-bold mt-2">Command Line Execution:</h3>
             <pre className="bg-white p-2 rounded border">programname.exe &lt;inFile&gt; &lt;outFile&gt;
 Example: counter.exe myInput.txt Count.txt</pre>
+            <div className="bg-gray-50 p-3 rounded mt-2 text-sm">
+              <h4 className="font-semibold mb-2">Command Line Execution Breakdown</h4>
+              <div className="space-y-2">
+                <div>
+                  <span className="font-medium">1. Program Executable:</span>
+                  <p className="text-xs text-gray-600">The compiled C# application that processes character frequencies.</p>
+                </div>
+                <div>
+                  <span className="font-medium">2. Input File:</span>
+                  <p className="text-xs text-gray-600">ASCII text file to be analyzed, read byte by byte to count character occurrences.</p>
+                </div>
+                <div>
+                  <span className="font-medium">3. Output File:</span>
+                  <p className="text-xs text-gray-600">Destination file where character frequency results will be stored.</p>
+                </div>
+              </div>
+              <p className="text-xs italic text-gray-500 mt-2">
+                💡 Tip: Ensure input file exists and you have write permissions for the output file.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -331,7 +351,7 @@ dotnet run CharacterCounter.exe input.txt output.txt`}
               </pre>
             </div>
           </div>
-            </section>
+        </section>
 
            
         <section className="mt-8">
