@@ -219,33 +219,19 @@ Example: counter.exe myInput.txt Count.txt</pre>
                 {showCharacterFrequencies ? 'Hide' : 'View'} Expected Output
               </button>
             </div>
-            {showCharacterFrequencies && characterFrequencies.length > 0 && (
-              <div className="bg-gray-100 p-6 rounded-lg">
-                <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-md">
-                  <div className="bg-gray-200 px-4 py-2 font-semibold text-gray-700 border-b border-gray-300">
-                    Character Frequency Analysis
-                  </div>
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-gray-50 border-b border-gray-200">
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Character</th>
-                        <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ASCII Code</th>
-                        <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Frequency</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {characterFrequencies.map((freq, index) => (
-                        <tr key={index} className="hover:bg-gray-50 transition duration-200">
-                          <td className="px-4 py-2">{freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}</td>
-                          <td className="px-4 py-2 text-center">{freq.asciiCode}</td>
-                          <td className="px-4 py-2 text-center">{freq.frequency}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+             {showCharacterFrequencies && characterFrequencies.length > 0 && (
+               <div className="bg-[#1E1E1E] p-3 rounded-md">
+                 <pre className="font-mono text-[#D4D4D4] text-sm whitespace-pre-wrap break-all" style={{
+                   fontFamily: 'Consolas, monospace',
+                   backgroundColor: '#1E1E1E',
+                   padding: '10px',
+                   borderRadius: '4px',
+                   border: '1px solid #2D2D2D'
+                 }}>{characterFrequencies.map((freq) => 
+                   `${freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}(${freq.asciiCode}) ${freq.frequency}`
+                 ).join('\n')}</pre>
+               </div>
+             )}
           </section>
         )}
 
