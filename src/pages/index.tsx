@@ -208,6 +208,42 @@ Example: counter.exe myInput.txt Count.txt</pre>
           </div>
         </section>
 
+        {fileContent && (
+          <section className="mt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-semibold">Character Frequency Analysis</h3>
+              <button 
+                onClick={() => setShowCharacterFrequencies(!showCharacterFrequencies)}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+              >
+                {showCharacterFrequencies ? 'Hide' : 'View'} Expected Output
+              </button>
+            </div>
+            {showCharacterFrequencies && characterFrequencies.length > 0 && (
+              <div className="bg-gray-100 p-6 rounded-lg">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="border p-2">Character</th>
+                      <th className="border p-2">ASCII Code</th>
+                      <th className="border p-2">Frequency</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {characterFrequencies.map((freq, index) => (
+                      <tr key={index} className="hover:bg-gray-50">
+                        <td className="border p-2">{freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}</td>
+                        <td className="border p-2 text-center">{freq.asciiCode}</td>
+                        <td className="border p-2 text-center">{freq.frequency}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+        )}
+
         <section className="mt-6">
           <h2 className="text-2xl font-semibold mb-4">Project Setup Checklist</h2>
           <div className="bg-gray-100 p-4 rounded-lg">
@@ -400,41 +436,7 @@ dotnet run CharacterCounter.exe input.txt output.txt`}
           </div>
         </section>
 
-        {fileContent && (
-          <section className="mt-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-semibold">Character Frequency Analysis</h3>
-              <button 
-                onClick={() => setShowCharacterFrequencies(!showCharacterFrequencies)}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-              >
-                {showCharacterFrequencies ? 'Hide' : 'View'} Expected Output
-              </button>
-            </div>
-            {showCharacterFrequencies && characterFrequencies.length > 0 && (
-              <div className="bg-gray-100 p-6 rounded-lg">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="bg-gray-200">
-                      <th className="border p-2">Character</th>
-                      <th className="border p-2">ASCII Code</th>
-                      <th className="border p-2">Frequency</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {characterFrequencies.map((freq, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="border p-2">{freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}</td>
-                        <td className="border p-2 text-center">{freq.asciiCode}</td>
-                        <td className="border p-2 text-center">{freq.frequency}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </section>
-        )}
+
         
 
       </main>
