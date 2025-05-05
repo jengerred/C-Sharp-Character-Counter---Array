@@ -243,7 +243,8 @@ Example: counter.exe myInput.txt Count.txt</pre>
             position: 'absolute', 
             inset: 0, 
             overflowY: 'auto', 
-            padding: '1rem' 
+            padding: '1rem', 
+            backgroundColor: 'white' 
           }}>
               <pre style={{ 
             fontSize: '0.875rem', 
@@ -251,6 +252,7 @@ Example: counter.exe myInput.txt Count.txt</pre>
             whiteSpace: 'pre-wrap', 
             wordBreak: 'break-all', 
             fontFamily: 'monospace', 
+            backgroundColor: 'white',
             userSelect: 'text' 
           }}>{fileContent.replace(/\[NEWLINE\]/g, '\n')}</pre>
             </div>
@@ -260,7 +262,7 @@ Example: counter.exe myInput.txt Count.txt</pre>
             left: 0, 
             right: 0, 
             height: '0.25rem', 
-            backgroundColor: '#d1d5db' 
+            backgroundColor: 'white' 
           }}></div>
           </div>
         </section>
