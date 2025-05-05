@@ -19,41 +19,98 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:7777/api/FileProcessing/file-content')
-      .then(response => response.text())
-      .then(text => {
-        setFileContent(text)
-        processFile(text)
-      })
-      .catch(error => console.error('Error fetching file:', error))
+    const startTime = performance.now();
+    const controller = new AbortController();
+    const fetchStream = async () => {
+      try {
+        console.time('File Fetch and Process');
+        const response = await fetch('http://localhost:7777/api/FileProcessing/file-content', {
+          signal: controller.signal
+        });
+        
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+        let accumulatedText = '';
+        let chunkCount = 0;
+
+        const updateFileContent = (chunk: string) => {
+          // Batch updates to reduce re-renders
+          if (chunkCount % 10 === 0) {
+            setFileContent(prev => prev + chunk);
+          }
+          chunkCount++;
+        };
+
+        while (true) {
+          const { done, value } = await reader!.read();
+          if (done) break;
+          
+          const chunk = decoder.decode(value, { stream: true });
+          accumulatedText += chunk;
+          updateFileContent(chunk);
+        }
+
+        // Final update and processing
+        setFileContent(accumulatedText);
+        
+        // Defer heavy processing to next event loop
+        setTimeout(() => {
+          processFile(accumulatedText);
+          const endTime = performance.now();
+          console.log(`Total file processing time: ${(endTime - startTime).toFixed(2)}ms`);
+          console.timeEnd('File Fetch and Process');
+        }, 0);
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error('Error fetching file:', error);
+        }
+      }
+    };
+
+    fetchStream();
+    return () => controller.abort();
   }, [])
 
   const processFile = (text: string) => {
-    console.log('Processing file with FULL text:', text.slice(0, 500) + '...');
-    console.log('Total text length:', text.length);
-    console.log('Processing file with text:', text);
-    console.log('Text length:', text.length);
-    const frequencies: { [key: string]: number } = {}
+    // Use Web Worker for character frequency calculation
+    if (typeof window !== 'undefined' && window.Worker) {
+      const worker = new Worker(new URL('../utils/charFreqWorker.ts', import.meta.url));
+      
+      worker.onmessage = (event) => {
+        const frequencyArray: CharacterFrequency[] = event.data;
+        setCharacterFrequencies(frequencyArray);
+        worker.terminate();
+      };
 
-    // Process file byte by byte
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i]
-      frequencies[char] = (frequencies[char] || 0) + 1
+      worker.onerror = (error) => {
+        console.error('Web Worker error:', error);
+        worker.terminate();
+      };
+
+      // Send only first 50,000 characters to worker
+      worker.postMessage(text.slice(0, 50000));
+    } else {
+      // Fallback for browsers without Web Worker support
+      console.warn('Web Workers not supported, falling back to main thread processing');
+      const processedText = text.slice(0, 50000);
+      const frequencies: { [key: string]: number } = {}
+
+      for (let i = 0; i < processedText.length; i++) {
+        const char = processedText[i]
+        frequencies[char] = (frequencies[char] || 0) + 1
+      }
+
+      const frequencyArray: CharacterFrequency[] = Object.entries(frequencies)
+        .map(([character, frequency]) => ({
+          character,
+          asciiCode: character.charCodeAt(0),
+          frequency
+        }))
+        .sort((a, b) => a.asciiCode - b.asciiCode)
+        .slice(0, 500);
+
+      setCharacterFrequencies(frequencyArray);
     }
-
-    // Convert to CharacterFrequency array
-    const frequencyArray: CharacterFrequency[] = Object.entries(frequencies)
-      .map(([character, frequency]) => ({
-        character,
-        asciiCode: character.charCodeAt(0),
-        frequency
-      }))
-      .sort((a, b) => a.asciiCode - b.asciiCode)
-
-    console.log('Frequency array:', frequencyArray);
-    console.log('Generated frequency array:', frequencyArray);
-    console.log('Number of unique characters:', frequencyArray.length);
-    setCharacterFrequencies(frequencyArray)
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +252,7 @@ Example: counter.exe myInput.txt Count.txt</pre>
             wordBreak: 'break-all', 
             fontFamily: 'monospace', 
             userSelect: 'text' 
-          }}>{fileContent}</pre>
+          }}>{fileContent.replace(/\[NEWLINE\]/g, '\n')}</pre>
             </div>
             <div style={{ 
             position: 'absolute', 
