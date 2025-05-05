@@ -19,7 +19,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetch('/wap.txt')
+    fetch('http://localhost:7777/api/FileProcessing/file-content')
       .then(response => response.text())
       .then(text => {
         setFileContent(text)
