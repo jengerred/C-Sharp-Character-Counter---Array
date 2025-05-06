@@ -1,9 +1,12 @@
 // Web Worker for character frequency calculation
+// import DOMPurify from 'dompurify'; // Temporarily commented out for debugging
 self.onmessage = (event) => {
-  const text = event.data;
+  const rawText = event.data;
+  // const sanitizedFileContent = DOMPurify.sanitize(rawText); // Temporarily commented out
+  const sanitizedFileContent = rawText; // Send raw text for now
   const frequencies: { [key: string]: number } = {};
   const maxCharsToProcess = 50000;
-  const processedText = text.slice(0, maxCharsToProcess);
+  const processedText = sanitizedFileContent.slice(0, maxCharsToProcess);
 
   for (const char of processedText) {
     frequencies[char] = (frequencies[char] || 0) + 1;
@@ -18,5 +21,5 @@ self.onmessage = (event) => {
     .sort((a, b) => a.asciiCode - b.asciiCode)
     .slice(0, 500);
 
-  self.postMessage(frequencyArray);
+  self.postMessage({ sanitizedFileContent, calculatedFrequencies: frequencyArray });
 };

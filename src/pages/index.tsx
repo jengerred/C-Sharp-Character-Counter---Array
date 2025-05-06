@@ -33,13 +33,13 @@ export default function Home() {
         let accumulatedText = '';
         let chunkCount = 0;
 
-        const updateFileContent = (chunk: string) => {
-          // Batch updates to reduce re-renders
-          if (chunkCount % 10 === 0) {
-            setFileContent(prev => prev + chunk);
-          }
-          chunkCount++;
-        };
+        // const updateFileContent = (chunk: string) => {
+        //   // Batch updates to reduce re-renders
+        //   if (chunkCount % 10 === 0) {
+        //     setFileContent(prev => prev + chunk);
+        //   }
+        //   chunkCount++;
+        // };
 
         while (true) {
           const { done, value } = await reader!.read();
@@ -47,11 +47,11 @@ export default function Home() {
           
           const chunk = decoder.decode(value, { stream: true });
           accumulatedText += chunk;
-          updateFileContent(chunk);
+          // updateFileContent(chunk); // Don't update state here
         }
 
         // Final update and processing
-        setFileContent(accumulatedText);
+        // setFileContent(accumulatedText); // Don't update state here, wait for worker
         
         // Defer heavy processing to next event loop
         setTimeout(() => {
@@ -77,8 +77,9 @@ export default function Home() {
       const worker = new Worker(new URL('../utils/charFreqWorker.ts', import.meta.url));
       
       worker.onmessage = (event) => {
-        const frequencyArray: CharacterFrequency[] = event.data;
-        setCharacterFrequencies(frequencyArray);
+        const { sanitizedFileContent, calculatedFrequencies } = event.data;
+        setFileContent(sanitizedFileContent);
+        setCharacterFrequencies(calculatedFrequencies);
         worker.terminate();
       };
 
@@ -87,16 +88,15 @@ export default function Home() {
         worker.terminate();
       };
 
-      // Send only first 50,000 characters to worker
-      worker.postMessage(text.slice(0, 50000));
+      worker.postMessage(text);
     } else {
       // Fallback for browsers without Web Worker support
-      console.warn('Web Workers not supported, falling back to main thread processing');
-      const processedText = text.slice(0, 50000);
+      console.warn('Web Workers not supported, falling back to main thread processing (full text, no sanitization for fallback)');
+      // Fallback will process full text for frequencies but won't sanitize or set fileContent here
       const frequencies: { [key: string]: number } = {}
 
-      for (let i = 0; i < processedText.length; i++) {
-        const char = processedText[i]
+      for (let i = 0; i < text.length; i++) { // Process full text in fallback
+        const char = text[i]
         frequencies[char] = (frequencies[char] || 0) + 1
       }
 
@@ -147,7 +147,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold mb-6">Character Counter - Array Assignment</h1>
 
         <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-4">Assignment Instructions (AY 2019-2020)</h2>
+          <h2 className="text-2xl font-semibold mb-4">Assignment Instructions</h2>
           <div className="bg-gray-100 p-4 rounded-lg">
             <p className="mb-4">CSCI312: Character Counter - Array</p>
             <p className="mb-4">Design a program that reads in an ASCII text file (provided) one byte at a time and creates an output file that contains the frequency count of how many times each character appears in the input file.</p>
@@ -254,7 +254,7 @@ Example: counter.exe myInput.txt Count.txt</pre>
             fontFamily: 'monospace', 
             backgroundColor: 'white',
             userSelect: 'text' 
-          }}>{fileContent.replace(/\[NEWLINE\]/g, '\n')}</pre>
+          }}>{fileContent.slice(0, 10000).replace(/\[NEWLINE\]/g, '\n')}</pre>
             </div>
             <div style={{ 
             position: 'absolute', 
