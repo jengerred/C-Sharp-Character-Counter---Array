@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head'
+import Head from 'next/head';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism.css'; // Default light theme
+import 'prismjs/components/prism-csharp';
+import 'prismjs/components/prism-bash';
 
 interface CharacterFrequency {
   character: string;
@@ -13,6 +17,14 @@ export default function Home() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([]);
   const [showCharacterFrequencies, setShowCharacterFrequencies] = useState(false);
+
+  // Effect to highlight code blocks after component mounts/updates
+  useEffect(() => {
+    if (typeof window !== 'undefined') { // Ensure this runs only in the browser
+      console.log('PRISM: Attempting to highlight all code blocks (client-side).');
+      Prism.highlightAll();
+    }
+  }, []); // Run once after initial render and client-side hydration
 
   const handleImageClick = (imageSrc: string) => {
     setExpandedImage(prevImage => prevImage === imageSrc ? null : imageSrc);
@@ -139,6 +151,11 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-6">
+      <style jsx global>{`
+        pre.language-bash .token.comment {
+          color: #6A9955 !important; /* VS Code-like green for comments */
+        }
+      `}</style>
       <Head>
         <title>Character Counter Assignment</title>
       </Head>
@@ -172,19 +189,24 @@ export default function Home() {
 
             {showExampleOutput && (
               <div className="bg-[#1E1E1E] p-3 rounded-md">
-                <pre className="font-mono text-[#D4D4D4] text-sm whitespace-pre-wrap break-all" style={{
-                  fontFamily: 'Consolas, monospace',
-                  backgroundColor: '#1E1E1E',
-                  padding: '10px',
-                  borderRadius: '4px',
-                  border: '1px solid #2D2D2D'
-                }}>{`(10) 1
+                <pre className="whitespace-pre-wrap break-all" style={{
+                  backgroundColor: 'black',
+                  color: '#EDEDED',
+                  fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                  fontWeight: 'normal',
+                  fontSize: '0.875em',
+                  textShadow: 'none',
+                  padding: '1rem',
+                  borderRadius: '0.5rem'
+                }}>
+                  {`(10) 1
 (13) 1
 .(46) 1
 H(72) 1
 e(101) 1
 l(108) 2
-o(111) 1`}</pre>
+o(111) 1`}
+                </pre>
               </div>
             )}
 
@@ -192,8 +214,30 @@ o(111) 1`}</pre>
             <p>Character (ASCII value) (tab) Frequency</p>
 
             <h3 className="font-bold mt-2">Command Line Execution:</h3>
-            <pre className="bg-white p-2 rounded border">programname.exe &lt;inFile&gt; &lt;outFile&gt;
-Example: counter.exe myInput.txt Count.txt</pre>
+            <pre style={{
+              color: '#333',
+              backgroundColor: '#f8f8f8',
+              border: '2px solid #3b82f6',
+              borderRadius: '0.5rem',
+              padding: '1rem',
+              overflowX: 'auto',
+              boxShadow: 'none',
+              fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+              fontSize: '0.875em',
+              lineHeight: '1.5'
+            }} className="language-csharp whitespace-pre-wrap break-all"><code className="language-csharp">
+programname.exe &lt;inFile&gt; &lt;outFile&gt;
+</code></pre>
+            <pre className="whitespace-pre-wrap break-all" style={{
+              backgroundColor: 'black',
+              color: '#EDEDED',
+              fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+              fontWeight: 'normal',
+              fontSize: '0.875em',
+              textShadow: 'none',
+              padding: '1rem',
+              borderRadius: '0.5rem'
+            }}>counter.exe myInput.txt Count.txt</pre>
             <div className="bg-gray-50 p-3 rounded mt-2 text-sm">
               <h4 className="font-semibold mb-2">Command Line Execution Breakdown</h4>
               <div className="space-y-2">
@@ -280,15 +324,18 @@ Example: counter.exe myInput.txt Count.txt</pre>
             </div>
              {showCharacterFrequencies && characterFrequencies.length > 0 && (
                <div className="bg-[#1E1E1E] p-3 rounded-md">
-                 <pre className="font-mono text-[#D4D4D4] text-sm whitespace-pre-wrap break-all" style={{
-                   fontFamily: 'Consolas, monospace',
-                   backgroundColor: '#1E1E1E',
-                   padding: '10px',
-                   borderRadius: '4px',
-                   border: '1px solid #2D2D2D'
-                 }}>{characterFrequencies.map((freq) => 
-                   `${freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}(${freq.asciiCode}) ${freq.frequency}`
-                 ).join('\n')}</pre>
+                 <pre className="whitespace-pre-wrap break-all" style={{
+                  backgroundColor: 'black',
+                  color: '#EDEDED',
+                  fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                  fontWeight: 'normal',
+                  fontSize: '0.875em',
+                  textShadow: 'none',
+                  padding: '1rem',
+                  borderRadius: '0.5rem'
+                }}>{characterFrequencies.map((freq) => 
+                  `${freq.character === '\n' ? '\\n' : freq.character === '\r' ? '\\r' : freq.character === ' ' ? 'Space' : freq.character}(${freq.asciiCode}) ${freq.frequency}`
+                ).join('\n')}</pre>
                </div>
              )}
           </section>
@@ -367,12 +414,6 @@ Example: counter.exe myInput.txt Count.txt</pre>
                 <li>Select Console Application template</li>
                 <li>Configure project settings</li>
               </ol>
-              <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto language-csharp">
-{`// Project Configuration
-Project Type: Console Application
-Language: C#
-Target Framework: .NET Core or .NET Framework`}
-              </pre>
             </div>
 
             <div>
@@ -383,12 +424,6 @@ Target Framework: .NET Core or .NET Framework`}
                 <li>Choose project location</li>
                 <li>Confirm solution name</li>
               </ol>
-              <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto language-csharp">
-{`// Naming Convention
-Project Name: CharacterCounter
-Solution Name: CharacterCounter
-Location: [Your chosen directory]`}
-              </pre>
             </div>
 
             <div>
@@ -399,7 +434,18 @@ Location: [Your chosen directory]`}
                 <li>Select "Add" {'>'} "Class"</li>
                 <li>Name the class "CharacterFrequency.cs"</li>
               </ol>
-              <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto language-csharp">
+              <pre style={{
+  fontSize: '0.875rem',
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'break-all',
+  fontFamily: 'monospace',
+  backgroundColor: 'white',
+  border: '2px solid #3b82f6',
+  borderRadius: '0.5rem',
+  padding: '1rem',
+  overflowX: 'auto',
+  boxShadow: 'none'
+}} className="language-csharp"><code className="language-csharp">
 {`public class CharacterFrequency
 {
     // Private fields to store character and its frequency
@@ -416,7 +462,7 @@ Location: [Your chosen directory]`}
     public char GetCharacter() => _character;
     public int GetFrequency() => _frequency;
 }`}
-              </pre>
+</code></pre>
             </div>
 
             <div>
@@ -427,10 +473,21 @@ Location: [Your chosen directory]`}
                 <li>Add character and frequency getters</li>
                 <li>Create output formatting</li>
               </ol>
-              <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto language-csharp">
+              <pre style={{
+  fontSize: '0.875rem',
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'break-all',
+  fontFamily: 'monospace',
+  backgroundColor: 'white',
+  border: '2px solid #3b82f6',
+  borderRadius: '0.5rem',
+  padding: '1rem',
+  overflowX: 'auto',
+  boxShadow: 'none'
+}} className="language-csharp"><code className="language-csharp">
 {`public override string ToString() => 
     $"({(int)_character}) {_frequency}";`}
-              </pre>
+</code></pre>
             </div>
 
             <div>
@@ -442,7 +499,18 @@ Location: [Your chosen directory]`}
                 <li>Track character frequencies</li>
                 <li>Write results to output file</li>
               </ol>
-              <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto language-csharp">
+              <pre style={{
+  fontSize: '0.875rem',
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'break-all',
+  fontFamily: 'monospace',
+  backgroundColor: 'white',
+  border: '2px solid #3b82f6',
+  borderRadius: '0.5rem',
+  padding: '1rem',
+  overflowX: 'auto',
+  boxShadow: 'none'
+}} className="language-csharp"><code className="language-csharp">
 {`static void ProcessFile(string inputPath, string outputPath)
 {
     var frequencies = new List<CharacterFrequency>();
@@ -465,7 +533,7 @@ Location: [Your chosen directory]`}
 
     File.WriteAllLines(outputPath, 
         frequencies.Select(f => f.ToString()));
-}`}
+}`}</code>
               </pre>
             </div>
 
@@ -478,7 +546,10 @@ Location: [Your chosen directory]`}
                 <li>Run the application with input arguments</li>
                 <li>Verify output file contents</li>
               </ol>
-              <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto language-bash">
+              <pre
+  style={{ backgroundColor: 'black', color: '#EDEDED', fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace', fontWeight: 'normal', fontSize: '0.875em', textShadow: 'none' }}
+  className="p-4 rounded-lg overflow-x-auto language-bash"
+>
 {`# Command line execution example
 dotnet run CharacterCounter.exe input.txt output.txt`}
               </pre>
