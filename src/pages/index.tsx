@@ -12,7 +12,6 @@ interface CharacterFrequency {
 }
 
 export default function Home() {
-  const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<string>('')
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([]);
@@ -26,9 +25,6 @@ export default function Home() {
     }
   }, []); // Run once after initial render and client-side hydration
 
-  const handleImageClick = (imageSrc: string) => {
-    setExpandedImage(prevImage => prevImage === imageSrc ? null : imageSrc);
-  };
 
   useEffect(() => {
     const startTime = performance.now();
@@ -368,14 +364,12 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
                   <img
                     src={'/images/visual-studio-platform.png'}
                     alt="Visual Studio Platform"
-                    onClick={() => handleImageClick('/images/visual-studio-platform.png')}
                     style={{
-                      maxWidth: expandedImage === '/images/visual-studio-platform.png' ? '800px' : '300px', 
-                      maxHeight: expandedImage === '/images/visual-studio-platform.png' ? '600px' : '200px', 
-                      width: 'auto', 
-                      height: 'auto', 
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease'
+                      display: 'block',
+                      width: '100%',
+                      maxWidth: '800px',
+                      height: 'auto',
+                      maxHeight: '600px'
                     }}
                     className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
                   />
@@ -396,14 +390,12 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
                 <img
                   src={'/images/vs-console-app.png'}
                   alt="Visual Studio Console App Selection"
-                  onClick={() => handleImageClick('/images/vs-console-app.png')}
                   style={{
-                    maxWidth: expandedImage === '/images/vs-console-app.png' ? '800px' : '300px', 
-                    maxHeight: expandedImage === '/images/vs-console-app.png' ? '600px' : '200px', 
-                    width: 'auto', 
-                    height: 'auto', 
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease'
+                    display: 'block',
+                    width: '100%',
+                    maxWidth: '800px',
+                    height: 'auto',
+                    maxHeight: '600px'
                   }}
                   className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
                 />
