@@ -363,8 +363,6 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
               <h3 className="text-xl font-semibold mb-4">Step 1: Open <a href="https://visualstudio.microsoft.com/" target="_blank" className="text-blue-600 hover:text-blue-800 transition-colors duration-300">Visual Studio</a></h3>
               <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
                 <div className="w-full md:w-1/2">
-                  <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                
                     <li>Click "Create a new project"</li>
                     <div className="w-full md:w-1/2 p-2 bg-gray-100">
                   <img
@@ -381,25 +379,9 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
                     }}
                     className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
                   />
+                  
                 </div>
-                    <li>Select "C# Console Application"</li>
-                    <div className="w-full md:w-1/2 p-2 bg-gray-100">
-                  <img
-                    src={'/images/vs-console-app.png'}
-                    alt="Visual Studio Console App Selection"
-                    onClick={() => handleImageClick('/images/vs-console-app.png')}
-                    style={{
-                      maxWidth: expandedImage === '/images/vs-console-app.png' ? '800px' : '300px', 
-                      maxHeight: expandedImage === '/images/vs-console-app.png' ? '600px' : '200px', 
-                      width: 'auto', 
-                      height: 'auto', 
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease'
-                    }}
-                    className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
-                  />
-                </div>
-                  </ol>
+                   
                 </div>
               
               </div>
@@ -408,19 +390,31 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
 
             <div>
               <h3 className="text-xl font-semibold mb-4">Step 2: Create Console Application Project</h3>
-              <p className="mb-3">Configure your new Console Application project.</p>
-              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Choose C# as the programming language</li>
-                <li>Select Console Application template</li>
-                <li>Configure project settings</li>
-              </ol>
+              <li>Select "C# Console Application"</li>
+                  
+                  <div className="w-full md:w-1/2 p-2 bg-gray-100">
+                <img
+                  src={'/images/vs-console-app.png'}
+                  alt="Visual Studio Console App Selection"
+                  onClick={() => handleImageClick('/images/vs-console-app.png')}
+                  style={{
+                    maxWidth: expandedImage === '/images/vs-console-app.png' ? '800px' : '300px', 
+                    maxHeight: expandedImage === '/images/vs-console-app.png' ? '600px' : '200px', 
+                    width: 'auto', 
+                    height: 'auto', 
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
+                />
+              </div>
+              
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold mb-4">Step 3: Name the Project "CharacterCounter"</h3>
-              <p className="mb-3">Set the project name and solution configuration.</p>
+              <h3 className="text-xl font-semibold mb-4">Step 3: Name the Project "YourName_CharacterCounter"</h3>
               <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Enter "CharacterCounter" as project name</li>
+                <li>Enter "YourName_CharacterCounter" as project name</li>
                 <li>Choose project location</li>
                 <li>Confirm solution name</li>
               </ol>
