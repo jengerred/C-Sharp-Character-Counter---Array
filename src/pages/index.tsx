@@ -16,6 +16,7 @@ export default function Home() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([]);
   const [showCharacterFrequencies, setShowCharacterFrequencies] = useState(false);
+  const [showInitialImplementationSteps, setShowInitialImplementationSteps] = useState(false);
 
   // Effect to highlight code blocks after component mounts/updates
   useEffect(() => {
@@ -209,6 +210,7 @@ o(111) 1`}
             <h3 className="font-bold mt-2">Output Format:</h3>
             <p>Character (ASCII value) (tab) Frequency</p>
 
+           
             <h3 className="font-bold mt-2">Command Line Execution:</h3>
             <pre style={{
               color: '#333',
@@ -221,7 +223,7 @@ o(111) 1`}
               fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
               fontSize: '0.875em',
               lineHeight: '1.5'
-            }} className="language-csharp whitespace-pre-wrap break-all"><code className="language-csharp">
+            }} className="whitespace-pre-wrap break-all language-csharp"><code className="language-csharp">
 programname.exe &lt;inFile&gt; &lt;outFile&gt;
 </code></pre>
             <pre className="whitespace-pre-wrap break-all" style={{
@@ -343,7 +345,7 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
             <ol className="list-decimal list-inside space-y-2">
               <li>Open Visual Studio</li>
               <li>Create a new Console Application project</li>
-              <li>Name the project "CharacterCounter"</li>
+              <li>Name the project "YourName_CharacterCounter"</li>
               <li>Add a new class named "CharacterFrequency"</li>
               <li>Implement character frequency tracking logic</li>
               <li>Add file processing methods</li>
@@ -354,12 +356,23 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
 
         <section className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Implementation Guide</h2>
+          <h3 className="text-xl font-semibold mb-4">Step 1: Initial Setup</h3>
+          <p>Create a new C# Console Application project named "YourName_CharacterCounter"</p>
+          <button
+            onClick={() => setShowInitialImplementationSteps(!showInitialImplementationSteps)}
+            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition text-sm my-3 inline-block"
+          >
+            {showInitialImplementationSteps ? 'Hide Step 1 Details' : 'Show me how'}
+          </button>
           <div className="space-y-6">
+  {showInitialImplementationSteps && (
+    <>
+     
             <div>
               <h3 className="text-xl font-semibold mb-4">Step 1: Open <a href="https://visualstudio.microsoft.com/" target="_blank" className="text-blue-600 hover:text-blue-800 transition-colors duration-300">Visual Studio</a></h3>
               <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
                 <div className="w-full md:w-1/2">
-                    <li>Click "Create a new project"</li>
+                    <p>Click "Create a new project"</p>
                     <div className="w-full md:w-1/2 p-2 bg-gray-100">
                   <img
                     src={'/images/visual-studio-platform.png'}
@@ -379,12 +392,10 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
                 </div>
               
               </div>
-
-            </div>
-
-            <div>
+              </div>
+              <div>
               <h3 className="text-xl font-semibold mb-4">Step 2: Create Console Application Project</h3>
-              <li>Select "C# Console Application"</li>
+              <p>Select "C# Console Application"</p>
                   
                   <div className="w-full md:w-1/2 p-2 bg-gray-100">
                 <img
@@ -411,127 +422,162 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
                 <li>Confirm solution name</li>
               </ol>
             </div>
+           
 
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Step 4: Add CharacterFrequency Class</h3>
-              <p className="mb-3">Create a new class to handle character frequency tracking.</p>
-              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Right-click project in Solution Explorer</li>
-                <li>Select "Add" {'>'} "Class"</li>
-                <li>Name the class "CharacterFrequency.cs"</li>
-              </ol>
-              <pre style={{
-  fontSize: '0.875rem',
-  whiteSpace: 'pre-wrap',
-  wordBreak: 'break-all',
-  fontFamily: 'monospace',
-  backgroundColor: 'white',
-  border: '2px solid #3b82f6',
-  borderRadius: '0.5rem',
-  padding: '1rem',
-  overflowX: 'auto',
-  boxShadow: 'none'
-}} className="language-csharp"><code className="language-csharp">
-{`public class CharacterFrequency
+    </> 
+  )}
+</div>
+
+
+<div>
+<h3 className="font-bold mt-2">Step 2: Create CharacterFrequency Class</h3>
+<pre style={{
+color: '#333',
+backgroundColor: '#f8f8f8',
+border: '2px solid #3b82f6',
+borderRadius: '0.5rem',
+padding: '1rem',
+overflowX: 'auto',
+boxShadow: 'none',
+fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+fontSize: '0.875em',
+lineHeight: '1.5'
+}} className="whitespace-pre-wrap break-all language-csharp">
+<code className="language-csharp">{`public class CharacterFrequency
 {
-    // Private fields to store character and its frequency
-    private char _character;
-    private int _frequency;
+public char Character { get; }  // The ASCII character being tracked
+public int Frequency { get; private set; } // Number of occurrences
 
-    public CharacterFrequency(char character)
-    {
-        _character = character;
-        _frequency = 1;
-    }
-
-    public void Increment() => _frequency++;
-    public char GetCharacter() => _character;
-    public int GetFrequency() => _frequency;
-}`}
-</code></pre>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Step 5: Implement Character Frequency Logic</h3>
-              <p className="mb-3">Add methods to track and manage character frequencies.</p>
-              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Implement frequency tracking methods</li>
-                <li>Add character and frequency getters</li>
-                <li>Create output formatting</li>
-              </ol>
-              <pre style={{
-  fontSize: '0.875rem',
-  whiteSpace: 'pre-wrap',
-  wordBreak: 'break-all',
-  fontFamily: 'monospace',
-  backgroundColor: 'white',
-  border: '2px solid #3b82f6',
-  borderRadius: '0.5rem',
-  padding: '1rem',
-  overflowX: 'auto',
-  boxShadow: 'none'
-}} className="language-csharp"><code className="language-csharp">
-{`public override string ToString() => 
-    $"({(int)_character}) {_frequency}";`}
-</code></pre>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Step 6: Add File Processing Methods</h3>
-              <p className="mb-3">Implement methods to read files and process character frequencies.</p>
-              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Create file reading method</li>
-                <li>Implement byte-by-byte processing</li>
-                <li>Track character frequencies</li>
-                <li>Write results to output file</li>
-              </ol>
-              <pre style={{
-  fontSize: '0.875rem',
-  whiteSpace: 'pre-wrap',
-  wordBreak: 'break-all',
-  fontFamily: 'monospace',
-  backgroundColor: 'white',
-  border: '2px solid #3b82f6',
-  borderRadius: '0.5rem',
-  padding: '1rem',
-  overflowX: 'auto',
-  boxShadow: 'none'
-}} className="language-csharp"><code className="language-csharp">
-{`static void ProcessFile(string inputPath, string outputPath)
+public CharacterFrequency(char character)
 {
-    var frequencies = new List<CharacterFrequency>();
+Character = character;
+Frequency = 1;  // Initialize frequency to 1 on creation
+}
 
-    using (var reader = new FileStream(inputPath, FileMode.Open))
-    {
-        int byteRead;
-        while ((byteRead = reader.ReadByte()) != -1)
-        {
-            char ch = (char)byteRead;
-            var existingFreq = frequencies
-                .FirstOrDefault(f => f.GetCharacter() == ch);
+public void Increment() => Frequency++; // Increase count for repeated characters
+}`}</code>
+</pre>
 
-            if (existingFreq != null)
-                existingFreq.Increment();
-            else
-                frequencies.Add(new CharacterFrequency(ch));
+<p className="mt-2 text-sm">
+The <code>CharacterFrequency</code> class represents a single character and its frequency in the input file. 
+Key features:
+</p>
+
+<ul className="list-disc list-inside ml-4 text-sm">
+<li>Stores the character and its occurrence count</li>
+<li>Initializes frequency to 1 when first created</li>
+<li>Provides an <code>Increment()</code> method to increase the frequency for repeated characters</li>
+</ul>
+</div>
+
+
+<div>
+<h3 className="font-bold mt-2">Step 3: Implement Main Method</h3>
+<pre style={{
+color: '#333',
+backgroundColor: '#f8f8f8',
+border: '2px solid #3b82f6',
+borderRadius: '0.5rem',
+padding: '1rem',
+overflowX: 'auto',
+boxShadow: 'none',
+fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+fontSize: '0.875em',
+lineHeight: '1.5'
+}} className="whitespace-pre-wrap break-all language-csharp">
+<code className="language-csharp">{`static void Main(string[] args)
+{
+// Validate command-line arguments
+if (args.Length != 2)
+{
+Console.WriteLine("Usage: counter.exe inputFile outputFile");
+return;
+}
+
+string inputFile = args[0];
+string outputFile = args[1];
+
+// Array to store CharacterFrequency objects indexed by ASCII value (0-255)
+CharacterFrequency[] indexedFrequencies = new CharacterFrequency[256];
+
+ry
+{
+// Read input file one byte at a time (ASCII is 1 byte per character)
+using (FileStream fs = File.OpenRead(inputFile))
+{
+int currentByte;
+while ((currentByte = fs.ReadByte()) != -1) // Read until end of file
+{
+char c = (char)currentByte; // Convert byte to character
+int ascii = (int)c; // Get ASCII value (0-255)
+
+// Track frequency in array
+if (indexedFrequencies[ascii] == null)
+{
+// First occurrence: create new CharacterFrequency object
+indexedFrequencies[ascii] = new CharacterFrequency(c);
+}
+else
+{
+// Subsequent occurrence: increment frequency
+indexedFrequencies[ascii].Increment();
+}
+}
+}
+
+// Output the character frequency results in ASCII order (0-255)
+using (StreamWriter sw = new StreamWriter(outputFile))
+{
+for (int ascii = 0; ascii < 256; ascii++)
+{
+if (indexedFrequencies[ascii] != null)
+{
+string charDisplay = (ascii < 32 || ascii == 127) ? "" : indexedFrequencies[ascii].Character.ToString();
+string line = (charDisplay == "")
+? $"\t({ascii})\t{indexedFrequencies[ascii].Frequency}"
+: $"\t{charDisplay}({ascii})\t{indexedFrequencies[ascii].Frequency}";
+            </div>
+            </>
+          )}
+
+                    sw.WriteLine(line);
+                    Console.WriteLine(line);
+                }
+            }
         }
     }
-
-    File.WriteAllLines(outputPath, 
-        frequencies.Select(f => f.ToString()));
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+    }
 }`}</code>
-              </pre>
-            </div>
+            </pre>
 
+            <p className="mt-2 text-sm">
+              The <code>Main</code> method demonstrates the core logic for character frequency tracking:
+            </p> 
             <div>
-              <h3 className="text-xl font-semibold mb-4">Step 7: Build and Test Application</h3>
+              <ul className="list-disc list-inside ml-4">
+                <li>Validates command-line arguments for input and output files</li>
+                <li>Creates a 256-element array to track ASCII character frequencies</li>
+                <li>Reads the input file byte by byte using <code>FileStream</code></li>
+                <li>Tracks character frequencies in the indexed array</li>
+                <li>Writes frequency results to both output file and console</li>
+                <li>Handles potential file reading errors</li>
+              </ul>
+              </div>
+          </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Step 4: Build and Test Application</h3>
               <p className="mb-3">Compile the project and test with sample input files.</p>
+              <div>
               <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
                 <li>Build the solution</li>
                 <li>Create a sample input text file</li>
                 <li>Run the application with input arguments</li>
                 <li>Verify output file contents</li>
               </ol>
+              </div>
               <pre
   style={{ backgroundColor: 'black', color: '#EDEDED', fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace', fontWeight: 'normal', fontSize: '0.875em', textShadow: 'none' }}
   className="p-4 rounded-lg overflow-x-auto language-bash"
@@ -540,12 +586,7 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
 dotnet run CharacterCounter.exe input.txt output.txt`}
               </pre>
             </div>
-          </div>
-        </section>
-
-
-        
-
+            </section>
       </main>
     </div>
   )
