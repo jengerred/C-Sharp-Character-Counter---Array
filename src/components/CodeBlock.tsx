@@ -58,7 +58,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ codeString, language, title, clas
       {/* {title && <h4 className="text-md font-semibold mb-1 text-gray-700 px-4 pt-3">{title}</h4>} // TITLE TEMPORARILY REMOVED */}
       <div style={contentWrapperStyle}> {/* Yellow background div */}
         <CopyButton textToCopy={codeString} /> {/* Has absolute top-1 right-1 */}
-        <pre style={preTagStyle} className={`language-${language} ${className || ''}`}>
+        <pre tabIndex={0} style={preTagStyle} className={`language-${language}${className ? ` ${className}` : ''}`}>
           <code className={`language-${language}`}>{codeString}</code>
         </pre>
       </div>

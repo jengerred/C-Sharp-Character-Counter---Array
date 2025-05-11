@@ -31,8 +31,7 @@ const CopyButton: React.FC<CopyButtonProps> = ({ textToCopy, className }) => {
     <button
       onClick={handleCopy}
       disabled={isCopied}
-      style={{ backgroundColor: 'transparent', position: 'absolute', top: '0.25rem', right: '0.25rem' }} // Force transparent background and positioning
-      className={`absolute top-1 right-1 bg-transparent text-gray-500 hover:text-gray-700 p-1.5 rounded transition-colors duration-150 ${isCopied ? 'text-green-500 opacity-70 cursor-default' : ''} ${className || ''}`}
+      className={`btn-copy ${isCopied ? 'text-green-500 opacity-70 cursor-default' : ''} ${className || ''}`}
       aria-label="Copy code to clipboard"
     >
       {isCopied ? 'Copied!' : (

@@ -119,6 +119,7 @@ button:hover {
   border-radius: 4px; /* Keep consistent radius */
   cursor: pointer; /* Ensure cursor is pointer */
   transition: background-color 0.3s ease; /* Smooth transition */
+  /* margin-bottom: 1rem; */
 }
 
 .btn-green:hover {
@@ -141,6 +142,30 @@ button:hover {
 
 .btn-download:hover {
   background-color: #9CA3AF; /* gray-400 for hover */
+}
+
+.btn-copy {
+  position: absolute;
+  top: 0.25rem;
+  right: 2rem; /* This will create the 2rem space from the right edge */
+  background-color: transparent;
+  padding: 0.375rem; /* Equivalent to p-1.5 */
+  border: none;
+  border-radius: 0.25rem; /* Equivalent to rounded */
+  color: #6B7280; /* text-gray-500 */
+  cursor: pointer;
+  transition: color 0.15s ease-in-out; /* For hover effect */
+}
+
+.btn-copy:hover {
+  color: #4B5563; /* text-gray-700 */
+}
+
+/* Specific styles for the SVG icon inside the copy button, if needed */
+.btn-copy svg {
+  fill: currentColor; /* SVG inherits the button's text color */
+  width: 16px;
+  height: 16px;
 }
 
 .page-section-heading {

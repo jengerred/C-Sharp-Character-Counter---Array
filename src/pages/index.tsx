@@ -18,7 +18,9 @@ export default function Home() {
   const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([]);
   const [showCharacterFrequencies, setShowCharacterFrequencies] = useState(false);
   const [showInitialImplementationSteps, setShowInitialImplementationSteps] = useState(false);
+  const [showDetailedSteps, setShowDetailedSteps] = useState(false);
   const [showAddInputFilesSteps, setShowAddInputFilesSteps] = useState(false);
+  const [showRunProgramSteps, setShowRunProgramSteps] = useState(false);
 
   // Effect to highlight code blocks after component mounts/updates
   useEffect(() => {
@@ -264,7 +266,7 @@ Computers can't understand letters directly - they only understand numbers. ASCI
               <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
                 <div className="w-full md:w-1/2">
                     <p>Click "Create a new project"</p>
-                    <div className="w-full md:w-1/2 p-2 bg-gray-100">
+                    <div className="w-full p-2 bg-gray-100">
                   <img
                     src={'/images/visual-studio-platform.png'}
                     alt="Visual Studio Platform"
@@ -359,7 +361,6 @@ Computers can't understand letters directly - they only understand numbers. ASCI
           <button
             onClick={() => setShowAddInputFilesSteps(!showAddInputFilesSteps)}
             className="btn-green text-sm mb-3 inline-block transition rounded-md"
-            style={{ marginTop: '1.5rem' }}
           >
             {showAddInputFilesSteps ? 'Hide Details' : 'Show me How'}
           </button>
@@ -380,69 +381,61 @@ Computers can't understand letters directly - they only understand numbers. ASCI
               </>
             )}
           </div>
+          {/* Key Note section moved here */}
+          <p className="mt-4"><b>Key Notes About Test Files</b></p>
+          <p className="mt-1"><b>1. <span className="btn-download" style={{ marginRight: '0.25rem' }}>hello.txt</span> Behavior</b></p>
+          <p>While the file appears to contain just "Hello.", text editors like Notepad automatically add:</p>
+          <ul className="list-disc list-inside pl-4 my-1">
+            <li><code>{String.raw`\r`}</code> (Carriage Return - ASCII 13)</li>
+            <li><code>{String.raw`\n`}</code> (Newline - ASCII 10)</li>
+          </ul>
+          <p>This explains why our earlier output example shows these characters.</p>
+            {/* Copied Show/Hide Output section starts here */}
+            <div className="mb-4">
+              <button 
+                onClick={() => setShowExampleOutput(!showExampleOutput)}
+                className="btn-green rounded transition"
+              >
+                {showExampleOutput ? 'Hide' : 'Show'} Output
+              </button>
+            </div>
+
+            {showExampleOutput && (
+              <div className="bg-[#1E1E1E] p-3 rounded-md">
+                <pre className="whitespace-pre-wrap break-all" style={{
+                  backgroundColor: 'black',
+                  color: '#EDEDED',
+                  fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                  fontWeight: 'normal',
+                  fontSize: '0.875em',
+                  textShadow: 'none',
+                  padding: '1rem',
+                  borderRadius: '0.5rem'
+                }}>
+                  {`(10) 1
+(13) 1
+.(46) 1
+H(72) 1
+e(101) 1
+l(108) 2
+o(111) 1`}
+                </pre>
+              </div>
+            )}
+            {/* Copied Show/Hide Output section ends here */}
+            {/* New wap.txt Purpose section starts here */}
+            <p><b>2. <span className="btn-download" style={{ marginRight: '0.25rem' }}>wap.txt</span> Purpose</b></p>
+            <p>Contains the full text of War and Peace (~500,000 words) to:</p>
+            <ul className="list-disc list-inside pl-4 my-1 space-y-1">
+              <li>Test memory efficiency with large files</li>
+              <li>Verify consistent counting under heavy load</li>
+              <li>Demonstrate real-world character distributions</li>
+            </ul>
+            {/* New wap.txt Purpose section ends here */}
 
 </section>
-            <h3 className="font-bold mt-2">Command Line Execution:</h3>
-            <pre style={{
-              color: '#333',
-              backgroundColor: '#f8f8f8',
-              border: '2px solid #3b82f6',
-              borderRadius: '0.5rem',
-              padding: '1rem',
-              overflowX: 'auto',
-              boxShadow: 'none',
-              fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-              fontSize: '0.875em',
-              lineHeight: '1.5'
-            }} className="whitespace-pre-wrap break-all language-csharp"><code className="language-csharp">
-programname.exe &lt;inFile&gt; &lt;outFile&gt;
-</code></pre>
-            <pre className="whitespace-pre-wrap break-all" style={{
-              backgroundColor: 'black',
-              color: '#EDEDED',
-              fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-              fontWeight: 'normal',
-              fontSize: '0.875em',
-              textShadow: 'none',
-              padding: '1rem',
-              borderRadius: '0.5rem'
-            }}>counter.exe myInput.txt Count.txt</pre>
-            <div className="bg-gray-50 p-3 rounded mt-2 text-sm">
-              <h4 className="font-semibold mb-2">Command Line Execution Breakdown</h4>
-              <div className="space-y-2">
-                <div>
-                  <span className="font-medium">1. Program Executable:</span>
-                  <p className="text-xs text-gray-600">The compiled C# application that processes character frequencies.</p>
-                </div>
-                <div>
-                  <span className="font-medium">2. Input File:</span>
-                  <p className="text-xs text-gray-600">ASCII text file to be analyzed, read byte by byte to count character occurrences.</p>
-                </div>
-                <div>
-                  <span className="font-medium">3. Output File:</span>
-                  <p className="text-xs text-gray-600">Destination file where character frequency results will be stored.</p>
-                </div>
-              </div>
-              <p className="text-xs italic text-gray-500 mt-2">
-                💡 Tip: Ensure input file exists and you have write permissions for the output file.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Learning Objectives</h2>
-          <ul className="list-disc list-inside">
-            {learningObjectives.map((objective, index) => (
-              <li key={index} className="mb-2">{objective}</li>
-            ))}
-          </ul>
-        </section>
-
-   
-
         <section className="mt-6">
-          <h2 className="text-2xl font-semibold mb-4">ASCII text file</h2>
+          <p><b>Large ASCII text file <span className="btn-download" style={{ marginLeft: '0.25rem', marginRight: '0.25rem' }}>wap.txt</span> Contents:</b></p>
           <div style={{ 
             position: 'relative', 
             width: '100%', 
@@ -483,15 +476,15 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
         {fileContent && (
           <section className="mt-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-semibold">Character Frequency Analysis</h3>
+              <p><b>Character Frequency Analysis Output</b></p>
               <button 
                 onClick={() => setShowCharacterFrequencies(!showCharacterFrequencies)}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                className="btn-green"
               >
                 {showCharacterFrequencies ? 'Hide' : 'View'} Expected Output
               </button>
             </div>
-             {showCharacterFrequencies && characterFrequencies.length > 0 && (
+            {showCharacterFrequencies && characterFrequencies.length > 0 && (
                <div className="bg-[#1E1E1E] p-3 rounded-md">
                  <pre className="whitespace-pre-wrap break-all" style={{
                   backgroundColor: 'black',
@@ -509,92 +502,551 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
              )}
           </section>
         )}
-
-        <section className="mt-6">
-          <h2 className="text-2xl font-semibold mb-4">Project Setup Checklist</h2>
-          <div className="bg-gray-100 p-4 rounded-lg">
-            <ol className="list-decimal list-inside space-y-2">
-              <li>Open Visual Studio</li>
-              <li>Create a new Console Application project</li>
-              <li>Name the project "YourName_CharacterCounter"</li>
-              <li>Add a new class named "CharacterFrequency"</li>
-              <li>Implement character frequency tracking logic</li>
-              <li>Add file processing methods</li>
-              <li>Build and test the application</li>
-            </ol>
-          </div>
-        </section>
-
-
-
-
-<section className="mt-8">
-<div>
-<h3 className="font-bold mt-2">Step 2: Create CharacterFrequency Class</h3>
-
-            <CodeBlock
-              title="CharacterFrequency.cs"
-              language="csharp"
-              codeString={`public class CharacterFrequency\n{\n  public char Character { get; }  // The ASCII character being tracked\n  public int Frequency { get; private set; } // Number of occurrences\n\n  public CharacterFrequency(char character)\n  {\n    Character = character;\n    Frequency = 1;  // Initialize frequency to 1 on creation\n  }\n\n  public void Increment() => Frequency++; // Increase count for repeated characters\n}`}
-            />
-
-
-<p className="mt-2 text-sm">
-The <code>CharacterFrequency</code> class represents a single character and its frequency in the input file. 
-Key features:
-</p>
-
-<ul className="list-disc list-inside ml-4 text-sm">
-<li>Stores the character and its occurrence count</li>
-<li>Initializes frequency to 1 when first created</li>
-<li>Provides an <code>Increment()</code> method to increase the frequency for repeated characters</li>
+<h3 className="page-section-heading">Step 3: Creating the CharacterFrequency Class</h3>
+<p>Let’s build a "mail counter" to track how many letters exist for each character – like a mailbox system for ASCII codes! 📬📨</p>
+<div className="mt-4">
+<p className="mb-0"><b>What This Class Does</b></p>
+<ul className="list-disc list-inside pl-4 mb-8 space-y-1">
+<li><b>Stores:</b> A character (like A or ?)</li>
+<li><b>Counts:</b> How many times it appears in the text (the frequency)</li>
 </ul>
 </div>
-
-
-<div>
-<h3 className="font-bold mt-2">Step 3: Implement Main Method</h3>
-            <CodeBlock
-              title="Main Method Logic (Program.cs)"
+<h3 className="page-section-heading">Code Walkthrough</h3>
+         <CodeBlock
+              title="CharacterFrequency.cs"
               language="csharp"
-              codeString={`static void Main(string[] args)\n{\n    // Validate command-line arguments\n    if (args.Length != 2)\n    {\n        Console.WriteLine(\"Usage: counter.exe inputFile outputFile\");\n        return;\n    }\n\n    string inputFile = args[0];\n    string outputFile = args[1];\n\n    // Array to store CharacterFrequency objects indexed by ASCII value (0-255)\n    CharacterFrequency[] indexedFrequencies = new CharacterFrequency[256];\n\n    try\n    {\n        // Read input file one byte at a time (ASCII is 1 byte per character)\n        using (FileStream fs = File.OpenRead(inputFile))\n        {\n            int currentByte;\n            while ((currentByte = fs.ReadByte()) != -1) // Read until end of file\n            {\n                char c = (char)currentByte; // Convert byte to character\n                int ascii = (int)c; // Get ASCII value (0-255)\n\n                // Track frequency in array\n                if (indexedFrequencies[ascii] == null)\n                {\n                    // First occurrence: create new CharacterFrequency object\n                    indexedFrequencies[ascii] = new CharacterFrequency(c);\n                }\n                else\n                {\n                    // Repeated character: increment frequency\n                    indexedFrequencies[ascii].Increment();\n                }\n            }\n        }\n\n        // Write to output file\n        using (StreamWriter sw = File.CreateText(outputFile))\n        {\n            sw.WriteLine(\"Character (ASCII)  Frequency\");\n            sw.WriteLine(\"---------------------------\");\n            for (int i = 0; i < indexedFrequencies.Length; i++)\n            {\n                if (indexedFrequencies[i] != null)\n                {\n                    char charToDisplay = indexedFrequencies[i].Character;\n                    string displayString = (charToDisplay == '\\n') ? "\\n" : (charToDisplay == '\\r') ? "\\r" : charToDisplay.ToString();\n                    sw.WriteLine($\"{displayString} ({i})          {indexedFrequencies[i].Frequency}\");\n                }\n            }\n        }\n        Console.WriteLine($\"Frequency analysis complete. Output written to {outputFile}\");\n    }\n    catch (FileNotFoundException)\n    {\n        Console.WriteLine($\"Error: Input file \"{inputFile}\" not found.\");\n    }\n    catch (IOException ex)\n    {\n        Console.WriteLine($\"An IO error occurred: {ex.Message}\");\n    }\n    catch (Exception ex)\n    {\n        Console.WriteLine($\"Error: {ex.Message}\");\n    }\n}`}
+              codeString={`public class CharacterFrequency\n{\n    // The character's "mailbox address" (e.g., 'B' = Mailbox 66)\n    public char Character { get; } // Like labeling a mailbox\n    \n    // Number of letters in this mailbox\n    public int Frequency { get; private set; } // Letters count\n\n    // When we find a NEW character:\n    public CharacterFrequency(char character)\n    {\n        Character = character; // Assign mailbox address\n        Frequency = 1;         // First letter arrives\n    }\n\n    // When we get ANOTHER letter for this character:\n    public void Increment() => Frequency++; // Add to the pile!\n}`}
             />
+<h4 className="font-semibold mt-3 mb-1">Real-Life Example</h4>
+<p>Imagine a post office with mailboxes:</p>
+<ul className="list-disc list-inside pl-4 mb-4 space-y-1">
+    <li><b>Character</b> = Mailbox label (e.g., "Mailbox 72: H")</li>
+    <li><b>Frequency</b> = Number of letters in the mailbox</li>
+    <li><b>Increment()</b> = Delivering another letter to that box</li>
+</ul>
+<h4 className="font-semibold mt-3 mb-1">Why This Works</h4>
+<ol className="list-decimal list-inside pl-4 space-y-1 mb-4">
+    <li className="mb-2">
+        <b>Character {'{ get; }'}</b>
+        <ul className="list-disc list-inside pl-5 mt-1">
+            <li>Mailbox addresses never change (no relabeling!).</li>
+        </ul>
+    </li>
+    <li className="mb-2">
+        <b>Frequency {'{ get; private set; }'}</b>
+        <ul className="list-disc list-inside pl-5 mt-1">
+            <li>Only postal workers (this class) can add letters.</li>
+        </ul>
+    </li>
+    <li>
+        <b>Increment() Method</b>
+        <ul className="list-disc list-inside pl-5 mt-1">
+            <li>Simple rule: New letter → Deliver to correct mailbox.</li>
+        </ul>
+    </li>
+</ol>
+<h3 className="page-section-heading">Step 4: Setting Up Our Mailbox System (Array)</h3>
+<p>Imagine a street with 256 mailboxes (0-255), one for every possible ASCII character. Each mailbox will hold letters (character counts) for its assigned character:</p>
+<CodeBlock
+  language="csharp"
+  codeString={`// Create 256 empty mailboxes
+CharacterFrequency[] mailboxes = new CharacterFrequency[256]; 
+// 📫[0] [1] [2] ... [255] (all empty at first)`}
+/>
+<h3 className="page-section-heading mt-6">Step 5: Sorting Letters (Reading the File)</h3>
+<p>We’ll process every "letter" (character) in the file and deliver it to the correct mailbox:</p>
+<CodeBlock
+    language="csharp"
+    codeString={`// Open the mailbag (file)\nusing (FileStream mailbag = File.OpenRead(inputFile)) \n{\n    int rawData;\n    // Process letters until the bag is empty\n    while ((rawData = mailbag.ReadByte()) != -1) \n    {\n        // 1. Decode the letter (convert byte to character)\n        char character = (char)rawData; // Example: 65 → 'A'\n        \n        // 2. Find mailbox number (ASCII value)\n        int mailboxNumber = (int)character; // 'A' → 65\n        \n        // 3. Deliver to mailbox (next step!)\n    }\n} // Mailbag closes automatically here`}
+/>
+<h4 className="font-semibold mt-4 mb-2">Key Analogies</h4>
+<div className="overflow-x-auto">
+    <table style={{ border: '1px solid #ccc', borderCollapse: 'collapse', width: '100%' }} className="min-w-full">
+        <thead className="bg-gray-50">
+            <tr>
+                <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Code Concept</th>
+                <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Real-World Mail Example</th>
+            </tr>
+        </thead>
+        <tbody className="bg-white">
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm font-mono text-gray-700">FileStream</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm text-gray-700">Bag of unsorted letters</td>
+            </tr>
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm font-mono text-gray-700">ReadByte()</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm text-gray-700">Pulling out one letter</td>
+            </tr>
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm font-mono text-gray-700">rawData</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm text-gray-700">Encoded address on the letter</td>
+            </tr>
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm font-mono text-gray-700">(char)rawData</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm text-gray-700">Reading the recipient’s name</td>
+            </tr>
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm font-mono text-gray-700">(int)character</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="whitespace-nowrap text-sm text-gray-700">Mailbox number (0-255)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h3 className="page-section-heading mt-6">Step 6: Delivering Letters (Updating Mailboxes)</h3>
+<p>For every character we read, we’ll deliver its "letter" to the correct mailbox using its ASCII address:</p>
+<CodeBlock
+    language="csharp"
+    codeString={`// Check mailbox for this character
+if (mailboxes[mailboxNumber] == null) 
+{
+    // New character → Install mailbox with first letter
+    mailboxes[mailboxNumber] = new CharacterFrequency(character); 
+}
+else 
+{
+    // Existing character → Add another letter
+    mailboxes[mailboxNumber].Increment(); 
+}`}
+/>
+<div className="overflow-x-auto mt-4 mb-4">
+    <h4 className="font-semibold mb-2 text-gray-700">Real-Mail Example</h4>
+    <table style={{ border: '1px solid #ccc', borderCollapse: 'collapse', width: '100%' }} className="min-w-full">
+        <thead className="bg-gray-50">
+            <tr>
+                <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Code Action</th>
+                <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Postal System Equivalent</th>
+            </tr>
+        </thead>
+        <tbody className="bg-white">
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900"><code>mailboxes == null</code></td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900">Check if Mailbox 66 exists</td>
+            </tr>
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900"><code>new CharacterFrequency('B')</code></td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900">Install new Mailbox 66 with 1 letter</td>
+            </tr>
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900"><code>Increment()</code></td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900">Add another letter to Mailbox 66</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h4 className="font-semibold mt-4 mb-2 text-gray-700">Why This Mailbox System Works</h4>
+<p className="mb-1">📬 <b>Direct Delivery System</b></p>
+<ul className="list-disc list-inside ml-4 mb-2">
+    <li>A (ASCII 65) → Mailbox 65</li>
+    <li>. (ASCII 46) → Mailbox 46</li>
+    <li>1 (ASCII 49) → Mailbox 49</li>
+</ul>
+<p className="ml-4">No need for addresses – ASCII values are pre-assigned mailbox numbers!</p>
+<div className="overflow-x-auto mt-4 mb-4">
+    <h4 className="font-semibold mb-2 text-gray-700">⚡ Lightning-Fast Efficiency</h4>
+    <table style={{ border: '1px solid #ccc', borderCollapse: 'collapse', width: '100%' }} className="min-w-full">
+        <thead className="bg-gray-50">
+            <tr>
+                <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Traditional Approach</th>
+                <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Our Mailbox System</th>
+            </tr>
+        </thead>
+        <tbody className="bg-white">
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900">Check every mailbox</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900">Go straight to the right mailbox</td>
+            </tr>
+            <tr>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900">Slow for large neighborhoods</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }} className="text-sm text-gray-900">Instant delivery, every time!</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div className="mt-6 mb-4 p-4 text-gray-800">
+  <p className="text-lg font-semibold mb-2"><span>🏗️</span> Built for Any Size</p>
+  <ul className="list-disc list-inside ml-4 mb-3 space-y-1">
+    <li>10 letters: Easy-peasy!</li>
+    <li>10,000 letters: Just as fast!</li>
+    <li>3.5 million letters (War and Peace): Still no slowdown!</li>
+  </ul>
 
+  <p className="text-lg font-semibold mt-4 mb-2"><span>🧠</span> Brainy Bonus</p>
+  <p>This approach uses <b>O(1) time complexity</b> – computer science jargon meaning "instant access," like knowing your friend’s exact locker number!</p>
+</div>
 
-            <p className="mt-2 text-sm">
-              The <code>Main</code> method demonstrates the core logic for character frequency tracking:
-            </p> 
-            <div>
-              <ul className="list-disc list-inside ml-4">
-                <li>Validates command-line arguments for input and output files</li>
-                <li>Creates a 256-element array to track ASCII character frequencies</li>
-                <li>Reads the input file byte by byte using <code>FileStream</code></li>
-                <li>Tracks character frequencies in the indexed array</li>
-                <li>Writes frequency results to both output file and console</li>
-                <li>Handles potential file reading errors</li>
+        <section> {/* New section for Step 7 */}
+          <h3 className="page-section-heading">Step 7: Generating the Postal Report</h3>
+          <p>Let’s create a report showing how many letters arrived in each mailbox, ordered by mailbox number (ASCII order):</p>
+          <CodeBlock
+            title="GeneratingTheReport.cs"
+            language="csharp"
+            codeString={`using (StreamWriter postmaster = new StreamWriter(outputFile))
+{
+    // Check every mailbox (0 to 255)
+    for (int mailboxNumber = 0; mailboxNumber < 256; mailboxNumber++)
+    {
+        if (mailboxes[mailboxNumber] != null)
+        {
+            var currentMailbox = mailboxes[mailboxNumber];
+            
+            // Special mailboxes (control characters) get no label
+            string mailboxLabel;
+            if (mailboxNumber < 32 || mailboxNumber == 127)
+                mailboxLabel = ""; // Internal mailroom boxes
+            else
+                mailboxLabel = currentMailbox.Character.ToString();
+            
+            // Format: Label(Mailbox#)  LettersCount
+            string reportLine = (mailboxLabel == "") 
+                ? $("({mailboxNumber})\t{currentMailbox.Frequency}") 
+                : $("{mailboxLabel}({mailboxNumber})\t{currentMailbox.Frequency}");
+            
+            postmaster.WriteLine(reportLine); // File report
+            Console.WriteLine(reportLine);    // Show on screen
+        }
+    }
+}`}
+          />
+          <h4 className="text-lg font-semibold mt-4 mb-2">Mailroom Rules</h4>
+          <ol className="list-decimal list-inside space-y-4">
+            <li>
+              <span className="font-medium">Order Matters</span>
+              <ul className="list-disc list-inside ml-5 mt-1 space-y-1 text-gray-700">
+                <li>We check mailboxes 0 → 255 – like walking down a street of numbered houses.</li>
               </ul>
-              </div>
-          </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Step 4: Build and Test Application</h3>
-              <p className="mb-3">Compile the project and test with sample input files.</p>
-              <div>
-              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Build the solution</li>
-                <li>Create a sample input text file</li>
-                <li>Run the application with input arguments</li>
-                <li>Verify output file contents</li>
-              </ol>
-              </div>
-              <pre
-  style={{ backgroundColor: 'black', color: '#EDEDED', fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace', fontWeight: 'normal', fontSize: '0.875em', textShadow: 'none' }}
-  className="p-4 rounded-lg overflow-x-auto language-bash"
->
-{`# Command line execution example
-dotnet run CharacterCounter.exe input.txt output.txt`}
-              </pre>
+            </li>
+            <li>
+              <span className="font-medium">Special Mailboxes</span>
+              <ul className="list-disc list-inside ml-5 mt-1 space-y-1 text-gray-700">
+                <li>Mailboxes 0-31 and 127 are "staff only" (control characters) → No public label.</li>
+              </ul>
+            </li>
+            <li>
+              <span className="font-medium">Report Format</span>
+              <ul className="list-disc list-inside ml-5 mt-1 space-y-1 text-gray-700">
+                <li>Normal Mailbox: <code className="bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm font-mono">H(72)  3</code></li>
+                <li>Staff Mailbox: <code className="bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm font-mono">(13)   1</code></li>
+              </ul>
+            </li>
+          </ol>
+          
+            <h4 className="font-semibold mt-4 mb-2 text-gray-700">Real-World Analogy</h4>
+            <div className="overflow-x-auto mt-4 mb-4"> 
+              <table style={{ border: '1px solid #ccc', borderCollapse: 'collapse', width: '100%' }} className="min-w-full">
+                <thead className="bg-gray-50"> 
+                  <tr>
+                    <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Code Concept</th>
+                    <th scope="col" style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left', backgroundColor: '#e9ecef' }} className="text-xs font-medium text-gray-500 uppercase tracking-wider">Postal System Equivalent</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}><code>for (mailboxNumber...)</code></td>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>Walking down the street of mailboxes</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}><code>mailboxLabel</code></td>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>House name/number on the mailbox</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}><code>reportLine</code></td>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>Printed delivery report sheet</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            </section>
+          </section>
+<section className="mt-8">
+  <h2 className="page-section-heading">Putting It All Together: The Complete Postal System</h2>
+  <p className="mb-4">Here’s the full program that reads letters (characters), delivers them to mailboxes (ASCII slots), and generates a delivery report (output file):</p>
+<CodeBlock
+  language="csharp"
+  codeString={`using System;
+using System.IO;
+
+public class CharacterFrequency
+{
+    public char Character { get; }      // Mailbox label (e.g., 'A')
+    public int Frequency { get; private set; } // Number of letters received
+
+    // When a new character arrives for the first time
+    public CharacterFrequency(char character)
+    {
+        Character = character; // Create mailbox label
+        Frequency = 1;         // First letter arrives
+    }
+
+    // Add another letter to this mailbox
+    public void Increment() => Frequency++; 
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Check command-line arguments
+        if (args.Length != 2)
+        {
+            Console.WriteLine("Usage: MailCounter.exe <inputFile> <outputFile>");
+            return;
+        }
+
+        string inputFile = args[0];   // Package to process
+        string outputFile = args[1];  // Delivery report file
+        CharacterFrequency[] mailboxes = new CharacterFrequency[256]; // Street with 256 mailboxes
+
+        try
+        {
+            // Open package of letters
+            using (FileStream mailbag = File.OpenRead(inputFile))
+            {
+                int rawData;
+                // Process each letter one by one
+                while ((rawData = mailbag.ReadByte()) != -1)
+                {
+                    char character = (char)rawData;       // Read letter's address
+                    int mailboxNumber = (int)character;   // Get mailbox number
+
+                    // Deliver to correct mailbox
+                    if (mailboxes[mailboxNumber] == null)
+                        mailboxes[mailboxNumber] = new CharacterFrequency(character); // New mailbox
+                    else
+                        mailboxes[mailboxNumber].Increment(); // Add to existing
+                }
+            }
+
+            // Create delivery report
+            using (StreamWriter postmaster = new StreamWriter(outputFile))
+            {
+                // Walk down mailbox street (0-255)
+                for (int mailboxNumber = 0; mailboxNumber < 256; mailboxNumber++)
+                {
+                    if (mailboxes[mailboxNumber] != null)
+                    {
+                        var currentMailbox = mailboxes[mailboxNumber];
+                        
+                        // Staff mailboxes don't get public labels
+                        bool isControlCharacter = mailboxNumber < 32 || mailboxNumber == 127;
+                        string mailboxLabel = isControlCharacter 
+                            ? "" 
+                            : currentMailbox.Character.ToString();
+
+                        // Format: PublicLabel(Mailbox#)  Count | (Mailbox#)  Count
+                        string reportLine = (mailboxLabel == "")
+                            ? $ "({mailboxNumber})\t{currentMailbox.Frequency}"  // Staff mailbox
+                            : $ "{mailboxLabel}({mailboxNumber})\t{currentMailbox.Frequency}"; // Public
+
+                        postmaster.WriteLine(reportLine); // File report
+                        Console.WriteLine(reportLine);    // Display copy
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($ "Postal Error: {ex.Message}");
+        }
+    }
+}
+`}
+/>
+</section>
+        
+<section className="mt-8">
+  <h2 className="page-section-heading">How It Works: Let’s Review What We Learned</h2>
+  <p className="mb-4">Let’s recap the key steps and concepts we’ve covered to build our character counter!</p>
+
+  <h3 className="text-xl font-semibold mt-6 mb-3">1. 🏣 Postal System Setup</h3>
+  <ul className="list-disc list-inside mb-4 pl-4">
+    <li><b>256 Mailboxes:</b> Pre-built for every possible ASCII character (0-255).</li>
+    <li><b>Empty at Start:</b> All mailboxes begin empty, waiting for letters.</li>
+  </ul>
+
+  <h3 className="text-xl font-semibold mt-6 mb-3">2. 📨 Sorting Letters</h3>
+  <ul className="list-disc list-inside mb-4 pl-4">
+    <li><b>Read Characters:</b> Convert each to its ASCII "address" (e.g., A → 65).</li>
+    <li><b>Instant Delivery:</b>
+      <ul className="list-disc list-inside ml-6">
+        <li><b>New Mailbox:</b> Create one if it doesn’t exist (H → Mailbox 72).</li>
+        <li><b>Add to Existing:</b> Tally another letter in the matching mailbox.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3 className="text-xl font-semibold mt-6 mb-3">3. 📄 Generating Reports</h3>
+  <ul className="list-disc list-inside mb-4 pl-4">
+    <li><b>Walk the Street:</b> Visit mailboxes in order (0 → 255).</li>
+    <li><b>Format Entries:</b>
+      <ul className="list-disc list-inside ml-6">
+        <li><b>Public Boxes:</b> Show character + count (e(101) 5).</li>
+        <li><b>Staff-Only:</b> Show numbers only ((13) 2 for carriage returns).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3 className="text-xl font-semibold mt-6 mb-3">Why You’ll Love This</h3>
+  <ul className="list-disc list-inside mb-4 pl-4">
+    <li>⚡ <b>Blazing Fast:</b> No searching – direct access to every mailbox.</li>
+    <li>📚 <b>Learn by Doing:</b> Master arrays, file I/O, and ASCII effortlessly.</li>
+    <li>💪 <b>Handles Anything:</b> Works for tiny notes or giant novels.</li>
+  </ul>
+
+  <p className="mt-6 font-semibold">Congratulations! You’ve built a character-counting powerhouse. Time to test it out! 🚀</p>
+</section>
+
+<section className="mt-8">
+  <h2 className="page-section-heading">Test It Out! 🧪</h2>
+  <p className="mb-4">Now that you’ve built your character counter, let’s put it through its paces! Here’s how to test it with different files and scenarios.</p>
+
+  <h3 className="text-xl font-semibold mt-6 mb-3">1. Simple Test: hello.txt</h3>
+  <p className="mb-2"><b>Steps:</b></p>
+  <ul className="list-disc list-inside mb-4 pl-4">
+    <li>1. Run the program:</li>
+  </ul>
+  
+</section>
+<div className="mb-4">
+      <button
+        onClick={() => setShowRunProgramSteps(!showRunProgramSteps)}
+        className="btn-green mb-2"
+      >
+        {showRunProgramSteps ? 'Hide Details' : 'Show Me How'}
+      </button>
+      {showRunProgramSteps && (
+        <div className="p-4 border rounded-md bg-gray-50">
+          <section className="mt-0">
+            <h2 className="page-section-heading mb-4">1. Open Terminal/Command Prompt</h2>
+            
+            <p className="mb-2"><b>For Windows users:</b></p>
+            
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold mb-1">Command Prompt</h4>
+              <ul className="list-disc list-inside ml-4">
+                <li>Press <b>Win + S</b></li>
+                <li>Type "<b>cmd</b>"</li>
+                <li>Select <b>Command Prompt</b> from the search results.</li>
+              </ul>
+            </div>
+            
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold mb-1">PowerShell</h4>
+              <ul className="list-disc list-inside ml-4">
+                <li>Right-click the <b>Start</b> button</li>
+                <li>Select <b>Windows PowerShell</b> or <b>Windows PowerShell (Admin)</b>.</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-lg font-semibold mb-1">Windows Terminal (Recommended)</h4>
+              <ul className="list-disc list-inside ml-4">
+                <li>If not installed, open the <b>Microsoft Store</b> and search for "<b>Windows Terminal</b>" to install it.</li>
+                <li>Press <b>Win + S</b></li>
+                <li>Type "<b>Terminal</b>"</li>
+                <li>Select <b>Windows Terminal</b> from the search results.</li>
+              </ul>
+            </div>
+          </section>
+          <section className="mt-8">
+            <h2 className="page-section-heading mb-4">2. Navigate to Your Project</h2>
+            <p className="mb-2">Use <code>cd</code> to move to your project's output directory (usually where the <code>.exe</code> file is located):</p>
+            <CodeBlock
+              language="bash"
+              codeString={`# Example for Windows:
+cd C:\\Projects\\CharacterCounter\\bin\\Debug\\net7.0`}
+            />
+            <p className="mt-4 mb-1"><b>Not sure where your executable file is?</b></p>
+            <ul className="list-disc list-inside ml-4 mb-4 text-sm">
+              <li><b>In Visual Studio:</b> Right-click your project in Solution Explorer → Select "Open Folder in File Explorer".</li>
+              <li>Navigate into the <code>bin</code> folder, then <code>Debug</code>, then a folder named after your .NET version (e.g., <code>net7.0</code>, <code>net8.0</code>). Your <code>.exe</code> file should be there.</li>
+            </ul>
+          </section>
+          <section className="mt-8">
+            <h2 className="page-section-heading mb-4">3. Run the Program</h2>
+            
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mt-6 mb-3">Option 1: Directly Run the Executable</h3>
+              <p className="mb-2">Once you are in the directory containing <code>CharacterCounter.exe</code>:</p>
+              <CodeBlock
+                language="bash"
+                codeString={`# Windows
+CharacterCounter.exe input.txt output.txt
+
+# Mac/Linux (if you created a self-contained app and are in its directory)
+./CharacterCounter input.txt output.txt`}
+              />
+              <p className="mt-2 text-sm text-gray-600">Remember to replace <code>input.txt</code> with your desired input file and <code>output.txt</code> with your desired output file name.</p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold mt-6 mb-3">Option 2: Use .NET CLI (from Project Directory)</h3>
+              <p className="mb-2">If you prefer to run from your project's root directory (where the <code>.csproj</code> file is):</p>
+              <CodeBlock
+                language="bash"
+                codeString={`# Build and run in one command
+dotnet run --project YourProjectName.csproj -- input.txt output.txt`}
+              />
+              <p className="mt-2 text-sm text-gray-600">Replace <code>YourProjectName.csproj</code> with the actual name of your project file. The <code>--</code> separates arguments for <code>dotnet run</code> from arguments for your application.</p>
+            </div>
+          </section>
+        </div>
+      )}
+    </div>
+<h3 className="font-bold mt-2">Command Line Execution:</h3>
+            <CodeBlock
+              language="csharp"
+              codeString={`counter.exe hello.txt output.txt`}
+            />
+            <p className="mb-2">2. Open output.txt and look for:</p>
+            <pre className="whitespace-pre-wrap break-all" style={{
+              backgroundColor: 'black',
+              color: '#EDEDED',
+              fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+              fontWeight: 'normal',
+              fontSize: '0.875em',
+              textShadow: 'none',
+              padding: '1rem',
+              borderRadius: '0.5rem'
+            }}>{`(10)    1  
+(13)    1  
+.(46)   1  
+H(72)   1  
+e(101)  1  
+l(108)  2  
+o(111)  1`}</pre>
+            {/* New section for Large File Stress Test */}
+            <div className="mt-6">
+              <h3 className="text-xl font-semibold mt-6 mb-3">2. Large File Stress Test: wap.txt (War and Peace)</h3>
+              <p className="mb-2"><b>Steps:</b></p>
+              <ol className="list-disc list-inside mb-4 pl-4">
+                <li> Run:
+                  <CodeBlock
+                    language="bash"
+                    codeString={`counter.exe wap.txt wap_output.txt`}
+                  />
+                </li>
+                <li>Check wap_output.txt for:
+                  <pre className="whitespace-pre-wrap break-all" style={{
+                    backgroundColor: 'black',
+                    color: '#EDEDED',
+                    fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                    fontWeight: 'normal',
+                    fontSize: '0.875em',
+                    textShadow: 'none',
+                    padding: '1rem',
+                    borderRadius: '0.5rem',
+                    marginTop: '0.5rem'
+                  }}>{`(32)    516291  ← Space character  
+e(101)  327814  
+t(116)  222893  
+a(97)   198124  
+...`}</pre>
+                </li>
+              </ol>
+              <p className="mt-6 text-lg font-semibold text-center">Congratulations! You’ve now tested your program like a pro. 🎉</p>
+            </div>
+            </div>
+          </section>
       </main>
     </div>
   )
