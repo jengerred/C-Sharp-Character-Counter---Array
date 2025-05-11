@@ -18,6 +18,7 @@ export default function Home() {
   const [characterFrequencies, setCharacterFrequencies] = useState<CharacterFrequency[]>([]);
   const [showCharacterFrequencies, setShowCharacterFrequencies] = useState(false);
   const [showInitialImplementationSteps, setShowInitialImplementationSteps] = useState(false);
+  const [showAddInputFilesSteps, setShowAddInputFilesSteps] = useState(false);
 
   // Effect to highlight code blocks after component mounts/updates
   useEffect(() => {
@@ -155,31 +156,33 @@ export default function Home() {
         }
       `}</style>
       <Head>
-        <title>Character Counter Assignment</title>
+        <title>CCharacter Counter Using Arrays: A Complete Beginner's Guide</title>
       </Head>
 
       <main>
-        <h1 className="text-3xl font-bold mb-6">Character Counter - Array Assignment</h1>
+        <h1 className="text-3xl font-bold mb-6">Character Counter Using Arrays: A Complete Beginner's Guide</h1>
 
         <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-4">Assignment Instructions</h2>
+          <h2 className="text-2xl font-semibold mb-4">Introduction: The Character Counting Challenge</h2>
           <div className="bg-gray-100 p-4 rounded-lg">
-            <p className="mb-4">CSCI312: Character Counter - Array</p>
-            <p className="mb-4">Design a program that reads in an ASCII text file (provided) one byte at a time and creates an output file that contains the frequency count of how many times each character appears in the input file.</p>
+            <p className="mb-4">Have you ever wondered how many times each letter, number, or symbol appears in a text file? That's what we're going to learn how to count today! This walkthrough explains how to build a program that reads a text file (like a book or essay) and counts how many times each character appears.
+Even if you're a complete beginner to programming, I'll explain everything step-by-step, with real-world examples that make the concepts clear. By the end, you'll understand not just what the code does, but why it works this way and how we figured it out!
+</p>
             
-            <h3 className="font-bold mt-2">Requirements:</h3>
-            <ul className="list-disc list-inside mb-4">
-              <li>Do not sort the output</li>
-              <li>Each unique character must be represented by a character frequency class instance</li>
-              <li>Character frequency objects must be processed and stored using an array</li>
-            </ul>
+            <h3 className="font-bold mt-4">What Are We Building?</h3>
+            <h4 className="font-bold mt-2">Our program will:</h4>
+            <ol className="list-disc list-inside mb-4">
+              <li>Read a text file one character at a time</li>
+              <li>Count how often each character appears</li>
+              <li>Create a new file listing each character, its ASCII code, and its frequency</li>
+              <li>Display the results in ASCII order (we'll explain what this means!)</li>
+            </ol>
+<p>For example, if our input file contains just Hello., our output should look like:</p>
 
-            <h3 className="font-bold mt-2">Example Input/Output</h3>
             <div className="mb-4">
-              <p className="mb-2">Example input file: Hello.</p>
               <button 
                 onClick={() => setShowExampleOutput(!showExampleOutput)}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                className="btn-green rounded transition"
               >
                 {showExampleOutput ? 'Hide' : 'Show'} Output
               </button>
@@ -208,10 +211,177 @@ o(111) 1`}
               </div>
             )}
 
-            <h3 className="font-bold mt-2">Output Format:</h3>
-            <p>Character (ASCII value) (tab) Frequency</p>
+            <h3 className="font-bold mt-2">Understanding the Core Concepts</h3>
+            <p><b>What is ASCII? Think of it as a Secret Decoder Ring! 🔍</b><br />
+Computers can't understand letters directly - they only understand numbers. ASCII is like a secret code that assigns a unique number to each character:
+</p>
+            <ul className="list-disc list-inside pl-4 mb-4">
+              <li>'A' = 65</li>
+              <li>'B' = 66</li>
+              <li>'a' = 97</li>
+              <li>'!' = 33</li>
+              <li>Space = 32</li>
+              <li>And so on...</li>
+            </ul>
+            <p className="mb-4">Even invisible characters like newlines (10) and carriage returns (13) have ASCII codes</p>
+            <p className="mb-4"><b>Why This Matters:</b> When we read a character, we can immediately convert it to its ASCII number. This number will be our "address" in the array.</p>
+            <p className="mt-4 mb-2"><b>What is an Array? Think of it as a Row of Mailboxes! 📬</b></p>
+            <p className="mb-2">An array is like a row of 256 numbered mailboxes (from 0 to 255). Each box can hold information about one character. The magic is that we can jump directly to any mailbox if we know its number:</p>
+            <ul className="list-disc list-inside pl-4 mb-2">
+              <li>Need box #65? Go straight to it! (That's where 'A' lives)</li>
+              <li>Want to check box #97? Jump right there! (That's 'a')</li>
+            </ul>
+            <p className="mb-4">This direct jumping is called <b>O(1) access</b> - it's super fast because no matter how many mailboxes you have, you can get to any specific one in the same amount of time.</p>
 
+            <h3 className="font-bold mt-4">Breaking Down the Problem</h3>
+            <p className="mb-2">Let's break this assignment into smaller steps:</p>
+            <ol className="list-decimal list-inside pl-4 mb-4">
+              <li>Create a new project in VS</li>
+              <li>Add text file</li>
+              <li>Create a class to track character information (the CharacterFrequency class)</li>
+              <li>Set up an array to store all possible ASCII characters (0-255)</li>
+              <li>Read the input file one byte at a time</li>
+              <li>Count character frequencies by updating the array</li>
+              <li>Write the results to an output file in ASCII order</li>
+            </ol>
+
+        <section className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Implementation Guide</h2>
+          <h3 className="text-xl font-semibold mb-4">Step 1: Initial Setup</h3>
+          <p>Create a new C# Console Application project named "YourName_CharacterCounter"</p>
+          <button
+            onClick={() => setShowInitialImplementationSteps(!showInitialImplementationSteps)}
+            className="btn-green text-sm my-3 inline-block transition rounded-md"
+          >
+            {showInitialImplementationSteps ? 'Hide Step 1 Details' : 'Show me how'}
+          </button>
+          <div className="space-y-6">
+  {showInitialImplementationSteps && (
+    <>
+     
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Step 1: Open <a href="https://visualstudio.microsoft.com/" target="_blank" className="text-blue-600 hover:text-blue-800 transition-colors duration-300">Visual Studio</a></h3>
+              <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div className="w-full md:w-1/2">
+                    <p>Click "Create a new project"</p>
+                    <div className="w-full md:w-1/2 p-2 bg-gray-100">
+                  <img
+                    src={'/images/visual-studio-platform.png'}
+                    alt="Visual Studio Platform"
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      maxWidth: '800px',
+                      height: 'auto',
+                      maxHeight: '600px'
+                    }}
+                    className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
+                  />
+                  
+                </div>
+                   
+                </div>
+              
+              </div>
+              </div>
+              <div>
+              <h3 className="text-xl font-semibold mb-4">Step 2: Create Console Application Project</h3>
+              <p>Select "C# Console Application"</p>
+                  
+                  <div className="w-full md:w-1/2 p-2 bg-gray-100">
+                <img
+                  src={'/images/vs-console-app.png'}
+                  alt="Visual Studio Console App Selection"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    maxWidth: '800px',
+                    height: 'auto',
+                    maxHeight: '600px'
+                  }}
+                  className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
+                />
+              </div>
+              
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Step 3: Name the Project "YourName_CharacterCounter"</h3>
+              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
+                <li>Enter "YourName_CharacterCounter" as project name</li>
+                <li>Choose project location</li>
+                <li>Confirm solution name</li>
+              </ol>
+            </div>
            
+
+    </> 
+  )}
+</div>
+
+          {/* Step 2: Add Input Files to Your Project */}
+          <h3 className="page-section-heading">Step 2: Add Input Files to Your Project</h3>
+          {/* Flex layout for download links using gap for spacing */}
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 my-4">
+            <span><b><i>Download: </i></b></span>
+            <span>Small text file:
+              <button
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/hello.txt';
+                  link.setAttribute('download', 'hello.txt');
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="btn-download"
+              >
+                hello.txt
+              </button>
+            </span>
+            <span>Large text file:
+              <button
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/wap.txt';
+                  link.setAttribute('download', 'wap.txt');
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="btn-download"
+              >
+                wap.txt
+              </button>
+            </span>
+          </div>
+
+          <button
+            onClick={() => setShowAddInputFilesSteps(!showAddInputFilesSteps)}
+            className="btn-green text-sm mb-3 inline-block transition rounded-md"
+            style={{ marginTop: '1.5rem' }}
+          >
+            {showAddInputFilesSteps ? 'Hide Details' : 'Show me How'}
+          </button>
+          <div className="space-y-2 mt-2">
+            {showAddInputFilesSteps && (
+              <>
+                <p className="font-semibold">Add InputFiles Folder:</p>
+                <ul className="list-disc list-inside pl-4 space-y-1">
+                  <li>Right-click your project in Solution Explorer → Add → New Folder → Name it <code>InputFiles</code>.</li>
+                  <li>Right-click the <code>InputFiles</code> folder → Add → Existing Item → Select your <code>Hello.txt</code> and <code>wap.txt</code> files.</li>
+                </ul>
+                <p className="font-semibold mt-3">Set File Properties:</p>
+                <ul className="list-disc list-inside pl-4 space-y-1">
+                  <li>For each input file (<code>Hello.txt</code>, <code>wap.txt</code>):</li>
+                  <li>Right-click the file → Properties.</li>
+                  <li>Set "Copy to Output Directory" to "Copy always" (so the program can find the files when running).</li>
+                </ul>
+              </>
+            )}
+          </div>
+
+</section>
             <h3 className="font-bold mt-2">Command Line Execution:</h3>
             <pre style={{
               color: '#333',
@@ -355,81 +525,10 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
           </div>
         </section>
 
-        <section className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Implementation Guide</h2>
-          <h3 className="text-xl font-semibold mb-4">Step 1: Initial Setup</h3>
-          <p>Create a new C# Console Application project named "YourName_CharacterCounter"</p>
-          <button
-            onClick={() => setShowInitialImplementationSteps(!showInitialImplementationSteps)}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition text-sm my-3 inline-block"
-          >
-            {showInitialImplementationSteps ? 'Hide Step 1 Details' : 'Show me how'}
-          </button>
-          <div className="space-y-6">
-  {showInitialImplementationSteps && (
-    <>
-     
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Step 1: Open <a href="https://visualstudio.microsoft.com/" target="_blank" className="text-blue-600 hover:text-blue-800 transition-colors duration-300">Visual Studio</a></h3>
-              <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div className="w-full md:w-1/2">
-                    <p>Click "Create a new project"</p>
-                    <div className="w-full md:w-1/2 p-2 bg-gray-100">
-                  <img
-                    src={'/images/visual-studio-platform.png'}
-                    alt="Visual Studio Platform"
-                    style={{
-                      display: 'block',
-                      width: '100%',
-                      maxWidth: '800px',
-                      height: 'auto',
-                      maxHeight: '600px'
-                    }}
-                    className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
-                  />
-                  
-                </div>
-                   
-                </div>
-              
-              </div>
-              </div>
-              <div>
-              <h3 className="text-xl font-semibold mb-4">Step 2: Create Console Application Project</h3>
-              <p>Select "C# Console Application"</p>
-                  
-                  <div className="w-full md:w-1/2 p-2 bg-gray-100">
-                <img
-                  src={'/images/vs-console-app.png'}
-                  alt="Visual Studio Console App Selection"
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    maxWidth: '800px',
-                    height: 'auto',
-                    maxHeight: '600px'
-                  }}
-                  className="mx-auto object-contain rounded-lg shadow-lg border border-gray-200"
-                />
-              </div>
-              
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Step 3: Name the Project "YourName_CharacterCounter"</h3>
-              <ol className="list-decimal list-inside bg-gray-100 p-4 rounded-lg mb-4">
-                <li>Enter "YourName_CharacterCounter" as project name</li>
-                <li>Choose project location</li>
-                <li>Confirm solution name</li>
-              </ol>
-            </div>
-           
-
-    </> 
-  )}
-</div>
 
 
+
+<section className="mt-8">
 <div>
 <h3 className="font-bold mt-2">Step 2: Create CharacterFrequency Class</h3>
 

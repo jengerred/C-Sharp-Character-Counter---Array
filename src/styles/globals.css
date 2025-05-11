@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   padding: 0;
@@ -88,17 +92,62 @@ textarea {
 }
 
 button {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
+  /* Basic reset/sensible defaults - adjust as needed */
+  background: none; /* Remove default background */
+  color: inherit; /* Inherit text color */
+  border: 1px solid #ccc; /* A subtle border */
+  padding: 0.25rem 0.5rem; /* Minimal padding */
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  text-align: inherit; /* Inherit text alignment */
+  font: inherit; /* Inherit font styles */
+  /* Remove any other opinionated styles like box-shadow if present */
 }
 
 button:hover {
-  background: #45a049;
+  border-color: #999; /* Darken border on hover */
+  background: #f0f0f0; /* Slight background on hover for feedback */
+}
+
+/* Our new green button class */
+.btn-green {
+  background-color: #4CAF50;
+  color: white;
+  border: none; /* Explicitly no border for these */
+  padding: 0.3rem 0.8rem; /* Further reduced padding */
+  border-radius: 4px; /* Keep consistent radius */
+  cursor: pointer; /* Ensure cursor is pointer */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.btn-green:hover {
+  background-color: #45a049;
+}
+
+.btn-download {
+  background-color: #D1D5DB; /* gray-300 */
+  color: #374151; /* gray-700 */
+  padding: 1px 0.25rem; /* py-px px-1 */
+  margin-left: 0.3rem; /* Updated from 0.5rem */
+  margin-right: 1rem; /* Equivalent to mr-4 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  border-radius: 0.25rem; /* rounded */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-download:hover {
+  background-color: #9CA3AF; /* gray-400 for hover */
+}
+
+.page-section-heading {
+  font-size: 1.125rem; /* text-lg, was 1.25rem */
+  font-weight: 600;   /* font-semibold */
+  margin-top: 2rem;   /* 32px */
+  margin-bottom: 0;
 }
 
 .section-navigation {
