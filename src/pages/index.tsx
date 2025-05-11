@@ -4,6 +4,7 @@ import Prism from 'prismjs';
 import 'prismjs/themes/prism.css'; // Default light theme
 import 'prismjs/components/prism-csharp';
 import 'prismjs/components/prism-bash';
+import CodeBlock from '../components/CodeBlock';
 
 interface CharacterFrequency {
   character: string;
@@ -431,32 +432,13 @@ programname.exe &lt;inFile&gt; &lt;outFile&gt;
 
 <div>
 <h3 className="font-bold mt-2">Step 2: Create CharacterFrequency Class</h3>
-<pre style={{
-color: '#333',
-backgroundColor: '#f8f8f8',
-border: '2px solid #3b82f6',
-borderRadius: '0.5rem',
-padding: '1rem',
-overflowX: 'auto',
-boxShadow: 'none',
-fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-fontSize: '0.875em',
-lineHeight: '1.5'
-}} className="whitespace-pre-wrap break-all language-csharp">
-<code className="language-csharp">{`public class CharacterFrequency
-{
-public char Character { get; }  // The ASCII character being tracked
-public int Frequency { get; private set; } // Number of occurrences
 
-public CharacterFrequency(char character)
-{
-Character = character;
-Frequency = 1;  // Initialize frequency to 1 on creation
-}
+            <CodeBlock
+              title="CharacterFrequency.cs"
+              language="csharp"
+              codeString={`public class CharacterFrequency\n{\n  public char Character { get; }  // The ASCII character being tracked\n  public int Frequency { get; private set; } // Number of occurrences\n\n  public CharacterFrequency(char character)\n  {\n    Character = character;\n    Frequency = 1;  // Initialize frequency to 1 on creation\n  }\n\n  public void Increment() => Frequency++; // Increase count for repeated characters\n}`}
+            />
 
-public void Increment() => Frequency++; // Increase count for repeated characters
-}`}</code>
-</pre>
 
 <p className="mt-2 text-sm">
 The <code>CharacterFrequency</code> class represents a single character and its frequency in the input file. 
@@ -473,85 +455,12 @@ Key features:
 
 <div>
 <h3 className="font-bold mt-2">Step 3: Implement Main Method</h3>
-<pre style={{
-color: '#333',
-backgroundColor: '#f8f8f8',
-border: '2px solid #3b82f6',
-borderRadius: '0.5rem',
-padding: '1rem',
-overflowX: 'auto',
-boxShadow: 'none',
-fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-fontSize: '0.875em',
-lineHeight: '1.5'
-}} className="whitespace-pre-wrap break-all language-csharp">
-<code className="language-csharp">{`static void Main(string[] args)
-{
-// Validate command-line arguments
-if (args.Length != 2)
-{
-Console.WriteLine("Usage: counter.exe inputFile outputFile");
-return;
-}
+            <CodeBlock
+              title="Main Method Logic (Program.cs)"
+              language="csharp"
+              codeString={`static void Main(string[] args)\n{\n    // Validate command-line arguments\n    if (args.Length != 2)\n    {\n        Console.WriteLine(\"Usage: counter.exe inputFile outputFile\");\n        return;\n    }\n\n    string inputFile = args[0];\n    string outputFile = args[1];\n\n    // Array to store CharacterFrequency objects indexed by ASCII value (0-255)\n    CharacterFrequency[] indexedFrequencies = new CharacterFrequency[256];\n\n    try\n    {\n        // Read input file one byte at a time (ASCII is 1 byte per character)\n        using (FileStream fs = File.OpenRead(inputFile))\n        {\n            int currentByte;\n            while ((currentByte = fs.ReadByte()) != -1) // Read until end of file\n            {\n                char c = (char)currentByte; // Convert byte to character\n                int ascii = (int)c; // Get ASCII value (0-255)\n\n                // Track frequency in array\n                if (indexedFrequencies[ascii] == null)\n                {\n                    // First occurrence: create new CharacterFrequency object\n                    indexedFrequencies[ascii] = new CharacterFrequency(c);\n                }\n                else\n                {\n                    // Repeated character: increment frequency\n                    indexedFrequencies[ascii].Increment();\n                }\n            }\n        }\n\n        // Write to output file\n        using (StreamWriter sw = File.CreateText(outputFile))\n        {\n            sw.WriteLine(\"Character (ASCII)  Frequency\");\n            sw.WriteLine(\"---------------------------\");\n            for (int i = 0; i < indexedFrequencies.Length; i++)\n            {\n                if (indexedFrequencies[i] != null)\n                {\n                    char charToDisplay = indexedFrequencies[i].Character;\n                    string displayString = (charToDisplay == '\\n') ? "\\n" : (charToDisplay == '\\r') ? "\\r" : charToDisplay.ToString();\n                    sw.WriteLine($\"{displayString} ({i})          {indexedFrequencies[i].Frequency}\");\n                }\n            }\n        }\n        Console.WriteLine($\"Frequency analysis complete. Output written to {outputFile}\");\n    }\n    catch (FileNotFoundException)\n    {\n        Console.WriteLine($\"Error: Input file \"{inputFile}\" not found.\");\n    }\n    catch (IOException ex)\n    {\n        Console.WriteLine($\"An IO error occurred: {ex.Message}\");\n    }\n    catch (Exception ex)\n    {\n        Console.WriteLine($\"Error: {ex.Message}\");\n    }\n}`}
+            />
 
-string inputFile = args[0];
-string outputFile = args[1];
-
-// Array to store CharacterFrequency objects indexed by ASCII value (0-255)
-CharacterFrequency[] indexedFrequencies = new CharacterFrequency[256];
-
-ry
-{
-// Read input file one byte at a time (ASCII is 1 byte per character)
-using (FileStream fs = File.OpenRead(inputFile))
-{
-int currentByte;
-while ((currentByte = fs.ReadByte()) != -1) // Read until end of file
-{
-char c = (char)currentByte; // Convert byte to character
-int ascii = (int)c; // Get ASCII value (0-255)
-
-// Track frequency in array
-if (indexedFrequencies[ascii] == null)
-{
-// First occurrence: create new CharacterFrequency object
-indexedFrequencies[ascii] = new CharacterFrequency(c);
-}
-else
-{
-// Subsequent occurrence: increment frequency
-indexedFrequencies[ascii].Increment();
-}
-}
-}
-
-// Output the character frequency results in ASCII order (0-255)
-using (StreamWriter sw = new StreamWriter(outputFile))
-{
-for (int ascii = 0; ascii < 256; ascii++)
-{
-if (indexedFrequencies[ascii] != null)
-{
-string charDisplay = (ascii < 32 || ascii == 127) ? "" : indexedFrequencies[ascii].Character.ToString();
-string line = (charDisplay == "")
-? $"\t({ascii})\t{indexedFrequencies[ascii].Frequency}"
-: $"\t{charDisplay}({ascii})\t{indexedFrequencies[ascii].Frequency}";
-            </div>
-            </>
-          )}
-
-                    sw.WriteLine(line);
-                    Console.WriteLine(line);
-                }
-            }
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error: {ex.Message}");
-    }
-}`}</code>
-            </pre>
 
             <p className="mt-2 text-sm">
               The <code>Main</code> method demonstrates the core logic for character frequency tracking:
