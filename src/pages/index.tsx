@@ -37,46 +37,53 @@ export default function Home() {
     const fetchStream = async () => {
       try {
         console.time('File Fetch and Process');
-        const response = await fetch('http://localhost:7777/api/FileProcessing/file-content', {
+        const response = await fetch('/api/file-content', {
           signal: controller.signal
         });
-        
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder();
-        let accumulatedText = '';
-        let chunkCount = 0;
 
-        // const updateFileContent = (chunk: string) => {
-        //   // Batch updates to reduce re-renders
-        //   if (chunkCount % 10 === 0) {
-        //     setFileContent(prev => prev + chunk);
-        //   }
-        //   chunkCount++;
-        // };
-
-        while (true) {
-          const { done, value } = await reader!.read();
-          if (done) break;
-          
-          const chunk = decoder.decode(value, { stream: true });
-          accumulatedText += chunk;
-          // updateFileContent(chunk); // Don't update state here
+        if (!response.ok) {
+          // Try to get more error detail from the API response if possible
+          let errorDetails = 'No additional details from API.';
+          try {
+            const errorData = await response.json();
+            errorDetails = errorData.error || errorData.message || JSON.stringify(errorData);
+          } catch (e) {
+            // Could not parse error response as JSON, or no body
+            errorDetails = response.statusText || 'Failed to fetch with no JSON error body.';
+          }
+          throw new Error(`API request failed with status ${response.status}: ${errorDetails}`);
         }
 
-        // Final update and processing
-        // setFileContent(accumulatedText); // Don't update state here, wait for worker
-        
-        // Defer heavy processing to next event loop
-        setTimeout(() => {
-          processFile(accumulatedText);
-          const endTime = performance.now();
-          console.log(`Total file processing time: ${(endTime - startTime).toFixed(2)}ms`);
-          console.timeEnd('File Fetch and Process');
-        }, 0);
+        // Parse the JSON response which should be { content: "..." }
+        const data = await response.json();
+
+        if (data && typeof data.content === 'string') {
+          // Defer heavy processing to next event loop
+          setTimeout(() => {
+            processFile(data.content); // Pass the actual text string
+          }, 0);
+        } else {
+          console.error('Fetched data is not in the expected format (expected { content: string }): ', data);
+          // Handle error: set an error message, or set empty content
+          setTimeout(() => {
+            processFile(''); // Or some error indicator
+          }, 0);
+        }
+        console.timeEnd('File Fetch and Process');
+
       } catch (error) {
-        if (!controller.signal.aborted) {
-          console.error('Error fetching file:', error);
+        if ((error as Error).name === 'AbortError') {
+          console.log('Fetch aborted');
+        } else {
+          console.error('Error fetching or processing file:', error);
+          // Handle fetch error: set an error message, or set empty content
+           setTimeout(() => { // Ensure processFile is still called to update state
+            processFile(''); // Or some error indicator
+          }, 0);
         }
+         console.timeEnd('File Fetch and Process'); // End timer on error too
+      } finally {
+        // controller.abort(); // Aborting here might be too aggressive if the component unmounts quickly
       }
     };
 
