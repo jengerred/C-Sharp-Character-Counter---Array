@@ -1034,7 +1034,7 @@ dotnet run --project YourProjectName.csproj -- input.txt output.txt`}
 <h3 className="font-bold mt-2">Command Line Execution:</h3>
             <CodeBlock
               language="csharp"
-              codeString={`YourName_CharacterCounterr.exe hello.txt output.txt`}
+              codeString={`YourName_CharacterCounter.exe hello.txt output.txt`}
             />
             <p className="mb-2">2. Open output.txt and look for:</p>
             <pre className="whitespace-pre-wrap break-all" style={{
@@ -1061,7 +1061,7 @@ o(111)  1`}</pre>
                 <li> Run:
                   <CodeBlock
                     language="bash"
-                    codeString={`counter.exe wap.txt wap_output.txt`}
+                    codeString={`YourName_CharacterCounter.exe wap.txt wap_output.txt`}
                   />
                 </li>
                 <li>Check wap_output.txt for:
