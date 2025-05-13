@@ -522,7 +522,21 @@ o(111) 1`}
          <CodeBlock
               title="CharacterFrequency.cs"
               language="csharp"
-              codeString={`public class CharacterFrequency\n{\n    // The character's "mailbox address" (e.g., 'B' = Mailbox 66)\n    public char Character { get; } // Like labeling a mailbox\n    \n    // Number of letters in this mailbox\n    public int Frequency { get; private set; } // Letters count\n\n    // When we find a NEW character:\n    public CharacterFrequency(char character)\n    {\n        Character = character; // Assign mailbox address\n        Frequency = 1;         // First letter arrives\n    }\n\n    // When we get ANOTHER letter for this character:\n    public void Increment() => Frequency++; // Add to the pile!\n}`}
+              codeString={'public class CharacterFrequency
+{
+    public char Character { get; }      // Mailbox label (e.g., 'A')
+    public int Frequency { get; private set; } // Number of letters received
+
+    // When a new character arrives for the first time
+    public CharacterFrequency(char character)
+    {
+        Character = character; // Create mailbox label
+        Frequency = 1;         // First letter arrives
+    }
+
+    // Add another letter to this mailbox
+    public void Increment() => Frequency++; 
+}`}
             />
 <h4 className="font-semibold mt-3 mb-1">Real-Life Example</h4>
 <p>Imagine a post office with mailboxes:</p>
@@ -564,7 +578,19 @@ CharacterFrequency[] mailboxes = new CharacterFrequency[256];
 <p>We’ll process every "letter" (character) in the file and deliver it to the correct mailbox:</p>
 <CodeBlock
     language="csharp"
-    codeString={`// Open the mailbag (file)\nusing (FileStream mailbag = File.OpenRead(inputFile)) \n{\n    int rawData;\n    // Process letters until the bag is empty\n    while ((rawData = mailbag.ReadByte()) != -1) \n    {\n        // 1. Decode the letter (convert byte to character)\n        char character = (char)rawData; // Example: 65 → 'A'\n        \n        // 2. Find mailbox number (ASCII value)\n        int mailboxNumber = (int)character; // 'A' → 65\n        \n        // 3. Deliver to mailbox (next step!)\n    }\n} // Mailbag closes automatically here`}
+    codeString={`// Open the mailbag (file)
+         using (FileStream mailbag = File.OpenRead(inputFile))
+         {
+             int rawData;
+             // Process each letter one by one (until the bag is empty)
+             while ((rawData = mailbag.ReadByte()) != -1)
+             {
+                 char character = (char)rawData;       // 1. Read letter's address (convert byte to character)
+                 int mailboxNumber = (int)character;   // 2, Find mailbox number (ASCII value)
+
+             // 3. Deliver to mailbox (next step!)
+    }
+} // Mailbag closes automatically here`}
 />
 <h4 className="font-semibold mt-4 mb-2">Key Analogies</h4>
 <div className="overflow-x-auto">
@@ -603,17 +629,13 @@ CharacterFrequency[] mailboxes = new CharacterFrequency[256];
 <p>For every character we read, we’ll deliver its "letter" to the correct mailbox using its ASCII address:</p>
 <CodeBlock
     language="csharp"
-    codeString={`// Check mailbox for this character
-if (mailboxes[mailboxNumber] == null) 
-{
-    // New character → Install mailbox with first letter
-    mailboxes[mailboxNumber] = new CharacterFrequency(character); 
-}
-else 
-{
-    // Existing character → Add another letter
-    mailboxes[mailboxNumber].Increment(); 
-}`}
+    codeString={`// 3. Deliver to mailbox
+        if (mailboxes[mailboxNumber] == null)
+            mailboxes[mailboxNumber] = new CharacterFrequency(character); // New mailbox
+        else
+            mailboxes[mailboxNumber].Increment(); // Add to an existing mailbox
+    }
+}       // Close mailbox automatically here`}
 />
 <div className="overflow-x-auto mt-4 mb-4">
     <h4 className="font-semibold mb-2 text-gray-700">Real-Mail Example</h4>
@@ -687,32 +709,32 @@ else
           <CodeBlock
             title="GeneratingTheReport.cs"
             language="csharp"
-            codeString={`using (StreamWriter postmaster = new StreamWriter(outputFile))
-{
-    // Check every mailbox (0 to 255)
-    for (int mailboxNumber = 0; mailboxNumber < 256; mailboxNumber++)
-    {
-        if (mailboxes[mailboxNumber] != null)
-        {
-            var currentMailbox = mailboxes[mailboxNumber];
-            
-            // Special mailboxes (control characters) get no label
-            string mailboxLabel;
-            if (mailboxNumber < 32 || mailboxNumber == 127)
-                mailboxLabel = ""; // Internal mailroom boxes
-            else
-                mailboxLabel = currentMailbox.Character.ToString();
-            
-            // Format: Label(Mailbox#)  LettersCount
-            string reportLine = (mailboxLabel == "") 
-                ? $("({mailboxNumber})\t{currentMailbox.Frequency}") 
-                : $("{mailboxLabel}({mailboxNumber})\t{currentMailbox.Frequency}");
-            
-            postmaster.WriteLine(reportLine); // File report
-            Console.WriteLine(reportLine);    // Show on screen
-        }
-    }
-}`}
+            codeString={` // Create delivery report
+ using (StreamWriter postmaster = new StreamWriter(outputFile))
+ {
+     // Walk down mailbox street (0-255)
+     for (int mailboxNumber = 0; mailboxNumber < 256; mailboxNumber++)
+     {
+         if (mailboxes[mailboxNumber] != null)
+         {
+             var currentMailbox = mailboxes[mailboxNumber];
+             
+             // Staff mailboxes don't get public labels
+             bool isControlCharacter = mailboxNumber < 32 || mailboxNumber == 127;
+             string mailboxLabel = isControlCharacter 
+                 ? "" 
+                 : currentMailbox.Character.ToString();
+
+             // Format: PublicLabel(Mailbox#)  Count | (Mailbox#)  Count
+             string reportLine = (mailboxLabel == "")
+                 ? $"({mailboxNumber})\t{currentMailbox.Frequency}"  // Staff mailbox
+                 : $"{mailboxLabel}({mailboxNumber})\t{currentMailbox.Frequency}"; // Public
+
+             postmaster.WriteLine(reportLine); // File report
+             Console.WriteLine(reportLine);    // Display copy
+         }
+     }
+ }`}
           />
           <h4 className="text-lg font-semibold mt-4 mb-2">Mailroom Rules</h4>
           <ol className="list-decimal list-inside space-y-4">
@@ -771,6 +793,7 @@ else
   language="csharp"
   codeString={`using System;
 using System.IO;
+using System.Text;
 
 public class CharacterFrequency
 {
@@ -795,33 +818,36 @@ class Program
         // Check command-line arguments
         if (args.Length != 2)
         {
-            Console.WriteLine("Usage: MailCounter.exe <inputFile> <outputFile>");
+            Console.WriteLine("Usage: CharacterCounter_Tutorial.exe inputFile outputFile");
             return;
         }
 
         string inputFile = args[0];   // Package to process
         string outputFile = args[1];  // Delivery report file
+
         CharacterFrequency[] mailboxes = new CharacterFrequency[256]; // Street with 256 mailboxes
+        // 📫[0] [1] [2] ... [255] (all empty at first)
 
         try
         {
-            // Open package of letters
+            // Open the mailbag (file)
             using (FileStream mailbag = File.OpenRead(inputFile))
             {
                 int rawData;
-                // Process each letter one by one
+                // Process each letter one by one (until the bag is empty)
                 while ((rawData = mailbag.ReadByte()) != -1)
                 {
-                    char character = (char)rawData;       // Read letter's address
-                    int mailboxNumber = (int)character;   // Get mailbox number
+                    char character = (char)rawData;       // 1. Read letter's address (convert byte to character)
+                    int mailboxNumber = (int)character;   // 2, Find mailbox number (ASCII value)
 
-                    // Deliver to correct mailbox
+                    // 3. Deliver to mailbox
                     if (mailboxes[mailboxNumber] == null)
                         mailboxes[mailboxNumber] = new CharacterFrequency(character); // New mailbox
                     else
-                        mailboxes[mailboxNumber].Increment(); // Add to existing
+                        mailboxes[mailboxNumber].Increment(); // Add to an existing mailbox
                 }
-            }
+            }       // Close mailbox automatically here
+                  
 
             // Create delivery report
             using (StreamWriter postmaster = new StreamWriter(outputFile))
@@ -841,21 +867,27 @@ class Program
 
                         // Format: PublicLabel(Mailbox#)  Count | (Mailbox#)  Count
                         string reportLine = (mailboxLabel == "")
-                            ? $ "({mailboxNumber})\t{currentMailbox.Frequency}"  // Staff mailbox
-                            : $ "{mailboxLabel}({mailboxNumber})\t{currentMailbox.Frequency}"; // Public
+                            ? $"({mailboxNumber})\t{currentMailbox.Frequency}"  // Staff mailbox
+                            : $"{mailboxLabel}({mailboxNumber})\t{currentMailbox.Frequency}"; // Public
 
                         postmaster.WriteLine(reportLine); // File report
                         Console.WriteLine(reportLine);    // Display copy
                     }
                 }
             }
+
+           
         }
         catch (Exception ex)
         {
-            Console.WriteLine($ "Postal Error: {ex.Message}");
+            Console.WriteLine($"Postal Error: {ex.Message}");
+
         }
+        Console.ReadLine(); // Pause console for review
     }
+
 }
+
 `}
 />
 </section>
