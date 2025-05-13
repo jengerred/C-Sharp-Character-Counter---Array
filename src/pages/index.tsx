@@ -992,7 +992,7 @@ class Program
             <CodeBlock
               language="bash"
               codeString={`# Example for Windows:
-cd C:\\Projects\\CharacterCounter\\bin\\Debug\\net7.0`}
+cd C:\\source\\repos\YourName_CharacterCounter\\YourName_CharacterCounter\\bin\\Debug\\net7.0`}
             />
             <p className="mt-4 mb-1"><b>Not sure where your executable file is?</b></p>
             <ul className="list-disc list-inside ml-4 mb-4 text-sm">
@@ -1009,10 +1009,10 @@ cd C:\\Projects\\CharacterCounter\\bin\\Debug\\net7.0`}
               <CodeBlock
                 language="bash"
                 codeString={`# Windows
-CharacterCounter.exe input.txt output.txt
+YourName_CharacterCounter.exe input.txt output.txt
 
 # Mac/Linux (if you created a self-contained app and are in its directory)
-./CharacterCounter input.txt output.txt`}
+./YourName_CharacterCounter input.txt output.txt`}
               />
               <p className="mt-2 text-sm text-gray-600">Remember to replace <code>input.txt</code> with your desired input file and <code>output.txt</code> with your desired output file name.</p>
             </div>
@@ -1034,7 +1034,7 @@ dotnet run --project YourProjectName.csproj -- input.txt output.txt`}
 <h3 className="font-bold mt-2">Command Line Execution:</h3>
             <CodeBlock
               language="csharp"
-              codeString={`counter.exe hello.txt output.txt`}
+              codeString={`YourName_CharacterCounterr.exe hello.txt output.txt`}
             />
             <p className="mb-2">2. Open output.txt and look for:</p>
             <pre className="whitespace-pre-wrap break-all" style={{
