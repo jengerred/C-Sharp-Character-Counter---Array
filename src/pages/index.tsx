@@ -522,7 +522,7 @@ o(111) 1`}
          <CodeBlock
               title="CharacterFrequency.cs"
               language="csharp"
-              codeString={'public class CharacterFrequency
+              codeString={`public class CharacterFrequency
 {
     public char Character { get; }      // Mailbox label (e.g., 'A')
     public int Frequency { get; private set; } // Number of letters received
